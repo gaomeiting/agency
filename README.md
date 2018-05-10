@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # my-tickets
 
 > A Vue.js project
@@ -19,3 +20,6 @@ npm run build --report
 ```
 
 For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+=======
+# 合作伙伴前端项目
+>>>>>>> 516e57f67a58af8c8354d1cb3e0697469f9a97ce
