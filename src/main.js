@@ -7,11 +7,14 @@ import router from './router'
 import store from './store'
 import axios from 'axios'
 import VueLazyload from 'vue-lazyload'
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
 import 'common/scss/index.scss';
 
 Vue.use(VueLazyload, {
   loading: require('common/images/default.png')
 })
+Vue.use(ElementUI);
 //设置打包请求地址
 /*axios.defaults.baseURL='http://bkdy.tunnel.qydev.com/bkdy'*/
 

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Activity from '@/components/activity/activity'
+import Login from '@/components/login/login'
+import Singer from '@/components/singer/singer'
 
 
 Vue.use(Router)
@@ -8,8 +9,9 @@ Vue.use(Router)
 
 const routes=[
   
-    
-    {path:'/', component: Activity },
+    {path:'/', redirect: "/login" },
+    {path:'/login', component: Login },
+    {path:'/singer', component: Singer }
    
 ]
 const router= new Router({
