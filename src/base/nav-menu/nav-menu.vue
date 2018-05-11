@@ -23,9 +23,11 @@ export default {
 			type: Array,
 			default() {
 				return [
+					{ name: "首页" },
 					{ name: "小声咖" },
 					{ name: "指导老师" },
-					{ name: "故事" }
+					{ name: "故事" },
+					{ name: "参与意向" }
 				]
 			}
 		},

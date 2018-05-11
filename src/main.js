@@ -11,6 +11,7 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import 'common/scss/index.scss';
 
+
 Vue.use(VueLazyload, {
   loading: require('common/images/default.png')
 })
