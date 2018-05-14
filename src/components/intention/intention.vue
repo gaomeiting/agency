@@ -3,10 +3,10 @@
 	<div class="page">
 	 	<div class="title">
 	 		<span>意向列表</span>
-	 		<span class="button" @click="goAdd">添加老师</span>
+	 		<span class="button" @click="goAdd">添加意向</span>
 	 	</div>
 	 	<div class="table-wrap">
-	 		<table-list type="intention"></table-list>
+	 		<table-list type="intention" @switchState="switchState"  :playCls="playCls"></table-list>
 	 	</div>
 	 	<div class="pagination-wrap">
 	 		<el-pagination
@@ -18,21 +18,43 @@
 		      :total="1000">
 		    </el-pagination>
 	 	</div>
+	 	<audio :src="currentSong.url" ref="audio"></audio>
 	</div>
 </transition>
 </template>
 <script>
 /*import NavMenu from 'base/nav-menu/nav-menu';*/
 import TableList from 'base/table-list/table-list';
+const SONGLISTLEN = 20;
 export default {
 	data() {
 		return {
-			
-			currentPage3: 1
+			currentSong: {
+				url: 'http://dl.stream.qqmusic.qq.com/C400003LxmX246aRC7.m4a?vkey=53DD0EE597E35BBF57F5155A3DA3CB3B950EF9A45985DEC41E8D7F7BF7CCB1171452A827AA1BE6D2F2FCD4945FEE1838EED5A62276F1C16B&guid=8182525974&uin=0&fromtag=66'
+			},
+			currentPage3: 1,
+			playCls: []
+		}
+	},
+	created() {
+		for(let i = 0; i < SONGLISTLEN; i++) {
+			this.playCls.push('icon-bofang')
 		}
 	},
 	methods: {
-		
+		switchState(index, cls) {
+			let arr = this.playCls.slice()
+			arr[index] = cls === 'icon-bofang' ? 'icon-bofang1' : 'icon-bofang';
+			/*设置播放路径
+			this.currentSong =*/ 
+			if(cls === 'icon-bofang') {
+				this.$refs.audio.play()
+			}
+			else {
+				this.$refs.audio.pause()
+			}
+			this.playCls = arr;
+		},
 		handleSizeChange() {
 
 		},

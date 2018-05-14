@@ -31,7 +31,7 @@ export default {
 	},
 	methods: {
 		goSinger() {
-			this.$router.push('/singer')
+			this.$router.push('/home')
 		}
 	}
 }

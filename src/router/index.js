@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '@/components/login/login'
+const Home=resolve => require(['@/components/home/home'], resolve);
 const Singer=resolve => require(['@/components/singer/singer'], resolve);
 const SingerDetail=resolve => require(['@/components/singer-detail/singer-detail'], resolve);
 const AddSinger=resolve => require(['@/components/add-singer/add-singer'], resolve);
@@ -17,6 +18,7 @@ const routes=[
   
     {path:'/', redirect: '/login' },
     {path:'/login', component: Login },
+    {path:'/home', component: Home },
     {path:'/singer', component: Singer},
     {path: '/singer/:id', component: SingerDetail },
     {path:'/addSinger', component: AddSinger },

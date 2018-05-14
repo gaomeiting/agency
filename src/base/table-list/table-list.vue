@@ -7,13 +7,13 @@
 				</div>
 				<div class="content" @click.stop="linkDetail">
 					<div class="name">
-						<div class="name-item">
+						<div class="name-item half">
 							<i class="iconfont icon-xingmingyonghumingnicheng"></i><span>李文山</span>
 						</div>
-						<div class="name-item">
+						<div class="name-item half">
 							<i class="iconfont icon-nianling"></i><span>10岁</span>
 						</div>
-						<div class="name-item">
+						<div class="name-item half">
 							<i class="iconfont icon-nv"></i>
 						</div>
 						<div class="name-item">
@@ -22,14 +22,17 @@
 						<div class="name-item" v-if="type == 'intention'">
 							<i class="iconfont icon-dianhua"></i><span>北京市朝阳区</span>
 						</div>
-						<div class="name-item" v-if=" type != 'intention'">
+						<div class="name-item half" v-if=" type != 'intention'">
 							<i class="iconfont icon-shuliang"></i><span>45</span>
 						</div>
-						<div class="name-item" v-if="type != 'intention'">
+						<div class="name-item half" v-if="type != 'intention'">
 							<i class="iconfont icon-guanzhu"></i><span>114</span>
 						</div>
-						<div class="name-item" v-if="type != 'intention'">
+						<div class="name-item half" v-if="type != 'intention'">
 							<i class="iconfont icon-toupiao"></i><span>110</span>
+						</div>
+						<div class="name-item half" v-if="type == 'intention'">
+							<i class="iconfont" :class="playCls[index]" @click.stop="switchState(index, playCls[index])"></i>
 						</div>
 						<div class="name-item" v-if="type == 'intention'">
 							<el-select v-model="value[index]" :placeholder='options[0].label' @change="changeVal">
@@ -78,6 +81,12 @@ export default {
 			          label: '已取消'
 			        }]
 			}
+		},
+		playCls: {
+			type: Array,
+			default() {
+				return []
+			}
 		}
 	},
 	data() {
@@ -88,6 +97,9 @@ export default {
 		}
 	},
 	methods: {
+		switchState(index, cls) {
+			this.$emit('switchState', index, cls)
+		},
 		changeVal(option) {
 			console.log(option)
 		},
@@ -140,6 +152,9 @@ export default {
 				padding-right: 8px;
 				display: flex;
 				align-items: center;
+			}
+			.half {
+				flex: 0.5;
 			}
 		}
 		
