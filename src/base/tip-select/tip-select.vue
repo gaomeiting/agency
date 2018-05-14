@@ -11,18 +11,19 @@
 </template>
 <script>
 export default {
-	props: {
-		flag: {
-			type: Boolean,
-			default: true
-		}
-	},
+	
 	data() {
 		return { 
-			
+			flag: false
 		}
 	},
 	methods: {
+		show() {
+			this.flag = true;
+		},
+		hide() {
+			this.flag = false;
+		},
 		edit() {
 			this.$emit('edit')
 		},

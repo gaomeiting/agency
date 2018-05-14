@@ -1,11 +1,20 @@
 <template>
 <transition name="fade" transition-mode="out-in">
 	<div class="page">
+
 	 	<div class="title">
-	 		<span>故事列表</span>
+	 		<span>指导老师详情</span>
+	 		<span class="button">修改</span>
 	 	</div>
 	 	<div class="table-wrap">
-	 		<story-list type="story" :playCls="playCls" @deleteStory="deleteStory" @switchState="switchState"></story-list>
+	 		<table-item @editTel="editTel" type="teacher"></table-item>
+	 	</div>
+	 	<div class="title">
+	 		<span>故事列表</span>
+	 		<span class="button">删除全部</span>
+	 	</div>
+	 	<div class="table-wrap">
+	 		<story-list type="teacher" :playCls="playCls" @deleteStory="deleteStory" @switchState="switchState"></story-list>
 	 	</div>
 	 	<div class="pagination-wrap">
 	 		<el-pagination
@@ -17,13 +26,13 @@
 		      :total="1000">
 		    </el-pagination>
 	 	</div>
+	 	
 	 	<audio :src="currentSong.url" ref="audio"></audio>
 	</div>
 </transition>
 </template>
 <script>
-/*import NavMenu from 'base/nav-menu/nav-menu';*/
-import TableList from 'base/table-list/table-list';
+import TableItem from 'base/item/item';
 import StoryList from 'base/story-list/story-list';
 const SONGLISTLEN = 20
 export default {
@@ -33,7 +42,10 @@ export default {
 				url: 'http://dl.stream.qqmusic.qq.com/C400003LxmX246aRC7.m4a?vkey=53DD0EE597E35BBF57F5155A3DA3CB3B950EF9A45985DEC41E8D7F7BF7CCB1171452A827AA1BE6D2F2FCD4945FEE1838EED5A62276F1C16B&guid=8182525974&uin=0&fromtag=66'
 			},
 			playCls: [],
-			currentPage3: 1
+			currentPage3: 1,
+			dialogImageUrl: '',
+        	dialogVisible: false,
+        	fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}]
 		}
 	},
 	created() {
@@ -43,6 +55,30 @@ export default {
 		}
 	},
 	methods: {
+		
+		ready() {
+		},
+		error() {
+		},
+		editTel(e) {
+			//校验手机号
+			const ev = e.currentTarget
+			console.log(ev)
+			//console.log(ev)
+			if(/^1[34578]\d{9}$/.test(ev.value) == false) {
+				//this.e.currentTarget.innerHTML=""
+				this.$alert('请输入正确的手机号', '', {
+		          confirmButtonText: '确定',
+		          callback: action => {
+		            ev.innerHTML = "18201491298"
+		          }
+		        });
+			}
+			else {
+				//修改成功；
+
+			}
+		},
 		switchState(index, cls) {
 			let arr = this.playCls.slice()
 			arr[index] = cls === 'icon-bofang' ? 'icon-bofang1' : 'icon-bofang';
@@ -65,19 +101,24 @@ export default {
 		handleCurrentChange() {
 
 		},
-		deleteOne() {
-			console.log("deleteOne");
-		},
-		linkDetail() {
-			console.log("linkDetail")
-		},
-		goAdd() {
-			this.$router.push("/addSinger")
-		}
+		handleRemove(file, fileList) {
+	        console.log(file, fileList);
+	    },
+	    handlePictureCardPreview(file) {
+	        this.dialogImageUrl = file.url;
+	        this.dialogVisible = true;
+	        console.log(this.dialogVisible)
+	    }
 	
 	},
+	watch : {
+		currentSong(newSong, oldSong) {
+			if(newSong === oldSong) return;
+			this.$ref.audio.play();
+		}
+	},
 	components: {
-		TableList,
+		TableItem,
 		StoryList
 	}
 }
@@ -85,13 +126,15 @@ export default {
 
 <style scoped lang="scss">
 @import "~common/scss/variable";
-
 .table-wrap {
 	width: 80%;
 	background: #fff;
 	padding: 0 10px;
 	margin: 0 auto;
 	box-sizing: border-box;
+}
+.table-top {
+	padding-top: 20px;
 }
 .title {
 	display: flex;
@@ -121,8 +164,6 @@ export default {
 		margin-top: 4px;
 	}
 }
-
-
 .pagination-wrap {
 	width: 80%;
 	display: flex;

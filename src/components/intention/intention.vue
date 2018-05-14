@@ -2,11 +2,11 @@
 <transition name="fade" transition-mode="out-in">
 	<div class="page">
 	 	<div class="title">
-	 		<span>指导老师列表</span>
+	 		<span>意向列表</span>
 	 		<span class="button" @click="goAdd">添加老师</span>
 	 	</div>
 	 	<div class="table-wrap">
-	 		<table-list @deleteOne="deleteOne" @linkDetail="linkDetail"></table-list>
+	 		<table-list type="intention"></table-list>
 	 	</div>
 	 	<div class="pagination-wrap">
 	 		<el-pagination
@@ -43,7 +43,7 @@ export default {
 			console.log("deleteOne");
 		},
 		linkDetail() {
-			this.$router.push('/teacher/187')
+			console.log("linkDetail")
 		},
 		goAdd() {
 			this.$router.push("/addTeacher")

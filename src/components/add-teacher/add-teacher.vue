@@ -17,15 +17,12 @@
 	  <el-form-item label="手机号码" required  prop="tel">
 	     <el-input v-model="ruleForm.tel"></el-input>
 	  </el-form-item>
-	  <el-form-item label="选择地区" required  prop="location">
-		    <el-select v-model="ruleForm.location" filterable placeholder="请选择">
-		    <el-option
-		      v-for="item in options"
-		      :key="item.value"
-		      :label="item.label"
-		      :value="item.value">
-		    </el-option>
-	  </el-select>
+	  <el-form-item label="QQ号码:"  prop="qq">
+	     <el-input v-model="ruleForm.qq"></el-input>
+	  </el-form-item>
+	  <el-form-item label="邮箱"  prop="email">
+	     <el-input v-model="ruleForm.email"></el-input>
+	  </el-form-item>
 	  </el-form-item>
 	  <el-form-item label="个人简介" required prop="desc">
 	    <el-input type="textarea" v-model="ruleForm.desc"></el-input>
@@ -49,29 +46,15 @@ export default {
     data() {
       return {
       	imageUrl: '',
-      	options: [{
-          value: '选项1',
-          label: '黄金糕'
-        }, {
-          value: '选项2',
-          label: '双皮奶'
-        }, {
-          value: '选项3',
-          label: '蚵仔煎'
-        }, {
-          value: '选项4',
-          label: '龙须面'
-        }, {
-          value: '选项5',
-          label: '北京烤鸭'
-        }],
-        ruleForm: {
+      	ruleForm: {
           name: '',
           sex: '',
           date: '',
           tel: '',
 		location: '',
-          desc: ''
+          desc: '',
+          qq: '',
+          email: ''
         },
         rules: {
           name: [
@@ -94,9 +77,18 @@ export default {
 	            }
 	        }, trigger: 'blur'}
           ],
-          
-          location: [
-            { required: true, message: '请选择城市', trigger: 'blur' }
+          qq: [
+            {validator:function(rule,value,callback) {
+
+	            if(value && /^[1-9][0-9]{4,14}$/.test(value) == false){
+	                callback(new Error("请输入正确的qq号"));
+	            }else{
+	                callback();
+	            }
+	        }, trigger: 'blur'}
+          ],
+          email: [
+             { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
           ],
           desc: [
             { required: true, message: '请填写个人简介', trigger: 'blur' },

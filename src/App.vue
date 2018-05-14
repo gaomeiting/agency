@@ -3,9 +3,9 @@
 		<div class="nav-wrap">
 			<nav-menu @selectNav="changeNavMenu" @signOut="signOut" :currentIndex="currentIndex"></nav-menu>
 	 	</div>
-		<keep-alive>
+		<!-- <keep-alive> -->
 		 <router-view></router-view>
-		</keep-alive>
+		<!-- </keep-alive> -->
 		
 	</div>
 </template>
@@ -37,11 +37,13 @@ export default {
 					this.$router.push("/singer")
 					break;
 				case 2:
+					this.$router.push("/teacher")
 					break;
 				case 3:
 					this.$router.push("/stories")
 					break;
 				case 4:
+					this.$router.push("/intention")
 					break;	
 			}
 		}

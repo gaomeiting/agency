@@ -46,7 +46,7 @@ export default {
 			console.log("deleteOne");
 		},
 		linkDetail() {
-			console.log("linkDetail")
+			this.$router.push("/singer/187")
 		},
 		goAdd() {
 			this.$router.push("/addSinger")
