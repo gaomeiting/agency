@@ -8,40 +8,37 @@
 				<div class="content">
 					<div class="name">
 						<div class="name-item">
-							<i class="iconfont icon-xingmingyonghumingnicheng"></i><span>李文山</span>
+							<i class="iconfont icon-xingmingyonghumingnicheng"></i><span>石家庄小楼文化传播文化有限公司</span>
 						</div>
+					</div>
+					<div class="name">
 						<div class="name-item">
-							<i class="iconfont icon-nianling"></i><span>10岁</span>
-						</div>
-						<div class="name-item">
-							<i class="iconfont icon-nv"></i>
+							<i class="iconfont icon-nianling"></i><span>迎曦</span>
 						</div>
 						<div class="name-item">
 							<i class="iconfont icon-dianhua"></i>
-							<span contenteditable="true" @blur="editTel" @mouseover="editShow" @mouseout="editHide">18201491298</span>
+							<span contenteditable="true" @blur="editTel($event,0)" @mouseover="editShow(0)" @mouseout="editHide(0)">13912342345</span>
 							<transition name="fade" transition-mode="out-in">
-							<i v-if="editFlag" class="iconfont icon-bianji" style="color: #0366d6"></i>
+							<i v-if="editFlag[0]" class="iconfont icon-bianji" style="color: #0366d6"></i>
 							</transition>
 						</div>
 						<div class="name-item">
-							<i class="iconfont icon-shuliang"></i><span>45</span>
+							<i class="iconfont icon-shuliang"></i><span>abc@abc.com.cn</span>
 						</div>
-						<div class="name-item" v-if="type == 'singer'">
-							<i class="iconfont icon-guanzhu"></i><span>114</span>
-						</div>
-						<div class="name-item" v-if="type == 'singer'">
-							<i class="iconfont icon-toupiao"></i><span>110</span>
-						</div>
-						<div class="name-item" v-if="type == 'teacher'">
-							<i class="iconfont icon-toupiao"></i><span>13020863721@163.com</span>
-						</div>
-						<div class="name-item" v-if="type == 'teacher'">
-							<i class="iconfont icon-toupiao"></i><span>1959151878</span>
-						</div>
+
+						
 					</div>
 					<div class="info">
-						<div class="name-item">
-							<i class="iconfont icon-jianjie"></i><span>上传精彩瞬间上传精彩瞬间上传精彩瞬间上传精彩瞬间上传精彩瞬间上传精彩瞬间</span>
+						<div class="name-item" v-if="type == 'singer'">
+							<i class="iconfont icon-guanzhu"></i><span>简称:小楼文化</span>
+						</div>
+						<div class="name-item" v-if="type == 'singer'">
+							<i class="iconfont icon-toupiao"></i>
+							<span>河北省 石家庄市&nbsp;</span>
+							<span contenteditable="true" @blur="editTel($event,1)" @mouseover="editShow(1)" @mouseout="editHide(1)">裕华区万达广场A座1023室</span>
+							<transition name="fade" transition-mode="out-in">
+							<i v-if="editFlag[1]" class="iconfont icon-bianji" style="color: #0366d6"></i>
+							</transition>
 						</div>
 					</div>
 				</div>
@@ -60,18 +57,23 @@ export default {
 	},
 	data() {
 		return { 
-			editFlag: false
+			editFlag: [false, false]
 		}
 	},
 	methods: {
-		editShow() {
-			this.editFlag = true;
+		editShow(index) {
+			console.log(index, 'editshow')
+			let arr = this.editFlag.slice();
+			arr[index] = true;
+			this.editFlag = arr;
 		},
-		editHide() {
-			this.editFlag = false;
+		editHide(index) {
+			let arr = this.editFlag.slice();
+			arr[index] = false;
+			this.editFlag = arr;
 		},
-		editTel(e) {
-			this.$emit('editTel', e)
+		editTel(e, index) {
+			this.$emit('editTel', e, index)
 		}
 	},
 	components: {
@@ -95,25 +97,24 @@ export default {
 		}
 		.name {
 			display: flex;
-			.name-item {
-				margin-right: 20px;
-				padding-right: 8px;
-				display: flex;
-				align-items: center;
-			}
 			
 		}
-		
+		.name-item {
+			margin-right: 20px;
+			padding-right: 8px;
+			display: flex;
+			align-items: center;
+		}
 		.btn .el-button {
 			padding: 8px 14px;
 			margin-right: 8px;
 		}
 		.img {
-			flex: 0 0 50px;
-			width: 50px;
-			height: 50px;
+			flex: 0 0 60px;
+			width: 60px;
+			height: 60px;
 			overflow: hidden;
-			border-radius: 25px;
+			border-radius: 30px;
 			margin-right: 10px;
 			img {
 				width: 100%;

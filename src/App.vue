@@ -32,6 +32,7 @@ export default {
 			if(newVal === oldVal) return;
 			switch(newVal) {
 				case 0:
+					this.$router.push("/home")
 					break;
 				case 1:
 					this.$router.push("/singer")
