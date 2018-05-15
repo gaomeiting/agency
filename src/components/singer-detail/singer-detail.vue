@@ -11,7 +11,6 @@
 	 	</div>
 	 	<div class="title">
 	 		<span>故事列表</span>
-	 		<span class="button">删除全部</span>
 	 	</div>
 	 	<div class="table-wrap">
 	 		<story-list :playCls="playCls" @deleteStory="deleteStory" @switchState="switchState"></story-list>
@@ -28,7 +27,6 @@
 	 	</div>
 	 	<div class="title">
 	 		<span>精彩瞬间</span>
-	 		<span class="button">删除全部</span>
 	 	</div>
 	 	<div class="table-wrap table-top">
 	 		<el-upload action="https://jsonplaceholder.typicode.com/posts/" list-type="picture-card" :on-preview="handlePictureCardPreview" :on-remove="handleRemove"  :file-list="fileList">

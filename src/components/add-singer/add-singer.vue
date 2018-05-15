@@ -1,46 +1,49 @@
 <template>
 <transition name="fade" transition-mode="out-in">
 	<div class="page">
-	<el-form label-width="100px" :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
-	  <el-form-item label="姓名" prop="name">
-	    <el-input v-model="ruleForm.name"></el-input>
-	  </el-form-item>
-	  <el-form-item label="性别" prop="sex">
-	    <el-radio-group v-model="ruleForm.sex">
-	      <el-radio label="男"></el-radio>
-	      <el-radio label="女"></el-radio>
-	    </el-radio-group>
-	  </el-form-item>
-	  <el-form-item prop="date" label="生日" required>
-        <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date" style="width: 100%;"></el-date-picker>
-      </el-form-item>
-	  <el-form-item label="手机号码" required  prop="tel">
-	     <el-input v-model="ruleForm.tel"></el-input>
-	  </el-form-item>
-	  <el-form-item label="选择地区" required  prop="location">
-		    <el-select v-model="ruleForm.location" filterable placeholder="请选择">
-		    <el-option
-		      v-for="item in options"
-		      :key="item.value"
-		      :label="item.label"
-		      :value="item.value">
-		    </el-option>
-	  </el-select>
-	  </el-form-item>
-	  <el-form-item label="个人简介" required prop="desc">
-	    <el-input type="textarea" v-model="ruleForm.desc"></el-input>
-	  </el-form-item>
-	  <el-form-item label="上传头像">
-			<el-upload class="avatar-uploader" action="" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-			  <img v-if="imageUrl" :src="imageUrl" class="avatar">
-			  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-			</el-upload>
-	  </el-form-item>
-	  <el-form-item>
-	    <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
-	    <el-button @click="resetForm('ruleForm')">重置</el-button>
-	  </el-form-item>
-	</el-form>
+		<div class="title">
+	 		<span>声咖信息填写</span>
+	 	</div>
+		<el-form label-width="100px" :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
+		  <el-form-item label="姓名" prop="name">
+		    <el-input v-model="ruleForm.name"></el-input>
+		  </el-form-item>
+		  <el-form-item label="性别" prop="sex">
+		    <el-radio-group v-model="ruleForm.sex">
+		      <el-radio label="男"></el-radio>
+		      <el-radio label="女"></el-radio>
+		    </el-radio-group>
+		  </el-form-item>
+		  <el-form-item prop="date" label="生日" required>
+	        <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date" style="width: 100%;"></el-date-picker>
+	      </el-form-item>
+		  <el-form-item label="手机号码" required  prop="tel">
+		     <el-input v-model="ruleForm.tel"></el-input>
+		  </el-form-item>
+		  <el-form-item label="选择地区" required  prop="location">
+			    <el-select v-model="ruleForm.location" filterable placeholder="请选择">
+			    <el-option
+			      v-for="item in options"
+			      :key="item.value"
+			      :label="item.label"
+			      :value="item.value">
+			    </el-option>
+		  </el-select>
+		  </el-form-item>
+		  <el-form-item label="个人简介" required prop="desc">
+		    <el-input type="textarea" v-model="ruleForm.desc"></el-input>
+		  </el-form-item>
+		  <el-form-item label="上传头像">
+				<el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+					<img v-if="imageUrl" :src="imageUrl" class="avatar">
+					<i v-else class="el-icon-plus avatar-uploader-icon"></i>
+				</el-upload>
+		  </el-form-item>
+		  <el-form-item>
+		    <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
+		    <el-button @click="resetForm('ruleForm')">重置</el-button>
+		  </el-form-item>
+		</el-form>
 	</div>
 </transition>
 </template>
@@ -147,7 +150,22 @@ methods: {
 @import "~common/scss/variable";
 .page {
 	width: 560px;
-	margin: 60px auto;
+	margin: 30px auto;
+	background: #fff;
+	padding: 30px 30px 30px 0;
+}
+.title {
+	display: flex;
+	width: 100%;
+	height: 40px;
+	line-height: 40px;
+	background: #fff;
+	text-indent: 26px;
+	font-size: 18px;
+	color: $color-text-ll;
+	border-bottom: 1px dashed $color-background;
+	margin-bottom: 30px;
+	
 }
 .avatar-uploader .el-upload {
 border: 1px dashed #d9d9d9;

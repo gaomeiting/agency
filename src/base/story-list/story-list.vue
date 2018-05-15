@@ -13,7 +13,7 @@
 					<p v-if="type == 'teacher'">声咖：宋红</p>
 					<p class="icon">
 						<i class="iconfont" :class="playCls[index]" @click.stop="switchState(index, playCls[index])"></i>
-						<i class="iconfont icon-bofang" @click.stop="deleteStory(item, index)"></i>
+						<i class="iconfont icon-weibiaoti6" @click.stop="deleteStory(item, index)"></i>
 					</p>
 				</div>
 			</li>

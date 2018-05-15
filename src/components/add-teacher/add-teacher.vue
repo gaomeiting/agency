@@ -1,6 +1,9 @@
 <template>
 <transition name="fade" transition-mode="out-in">
 	<div class="page">
+		<div class="title">
+	 		<span>指导老师信息填写</span>
+	 	</div>
 	<el-form label-width="100px" :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
 	  <el-form-item label="姓名" prop="name">
 	    <el-input v-model="ruleForm.name"></el-input>
@@ -139,7 +142,22 @@ methods: {
 @import "~common/scss/variable";
 .page {
 	width: 560px;
-	margin: 60px auto;
+	margin: 30px auto;
+	background: #fff;
+	padding: 30px 30px 30px 0;
+}
+.title {
+	display: flex;
+	width: 100%;
+	height: 40px;
+	line-height: 40px;
+	background: #fff;
+	text-indent: 26px;
+	font-size: 18px;
+	color: $color-text-ll;
+	border-bottom: 1px dashed $color-background;
+	margin-bottom: 30px;
+	
 }
 .avatar-uploader .el-upload {
 border: 1px dashed #d9d9d9;

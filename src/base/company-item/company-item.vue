@@ -8,12 +8,12 @@
 				<div class="content">
 					<div class="name">
 						<div class="name-item">
-							<i class="iconfont icon-xingmingyonghumingnicheng"></i><span>石家庄小楼文化传播文化有限公司</span>
+							<span>石家庄小楼文化传播文化有限公司</span>
 						</div>
 					</div>
 					<div class="name">
 						<div class="name-item">
-							<i class="iconfont icon-nianling"></i><span>迎曦</span>
+							<i class="iconfont icon-xingmingyonghumingnicheng"></i><span>迎曦</span>
 						</div>
 						<div class="name-item">
 							<i class="iconfont icon-dianhua"></i>
@@ -23,17 +23,18 @@
 							</transition>
 						</div>
 						<div class="name-item">
-							<i class="iconfont icon-shuliang"></i><span>abc@abc.com.cn</span>
+							<i class="iconfont icon-youxiang"></i>&nbsp;
+							<span>abc@abc.com.cn</span>
 						</div>
 
 						
 					</div>
-					<div class="info">
+					<div class="name">
 						<div class="name-item" v-if="type == 'singer'">
-							<i class="iconfont icon-guanzhu"></i><span>简称:小楼文化</span>
+							<span>简称:小楼文化</span>
 						</div>
 						<div class="name-item" v-if="type == 'singer'">
-							<i class="iconfont icon-toupiao"></i>
+							<i class="iconfont icon-dizhi"></i>
 							<span>河北省 石家庄市&nbsp;</span>
 							<span contenteditable="true" @blur="editTel($event,1)" @mouseover="editShow(1)" @mouseout="editHide(1)">裕华区万达广场A座1023室</span>
 							<transition name="fade" transition-mode="out-in">
@@ -86,7 +87,6 @@ export default {
 .table-list {
 	li {
 		display: flex;
-		align-items: center;
 		border-bottom: 1px solid $color-background;
 		padding: 20px;
 		position: relative;
@@ -97,9 +97,14 @@ export default {
 		}
 		.name {
 			display: flex;
+			font-size: 14px;
+			&:first-child {
+				font-size: 16px;
+			}
 			
 		}
 		.name-item {
+
 			margin-right: 20px;
 			padding-right: 8px;
 			display: flex;
@@ -130,12 +135,6 @@ export default {
 				display: flex;
 				padding-bottom: 10px;
 			}
-			.info {
-				display: flex;
-			}
-		}
-		.icon {
-
 		}
 	}
 	
