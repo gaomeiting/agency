@@ -1,6 +1,6 @@
 <template>
 	<transition name="fade" transition-mode="out-in">
- 	<div class="page">
+ 	<div class="login-wrap">
  		<img src="./bg.jpg" alt="">
  		<div class="mask"></div>
  		<div class="login">
@@ -45,7 +45,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.page {
+.login-wrap {
 	position: fixed;
 	top:0;
 	left: 0;

@@ -26,9 +26,6 @@
 	 		</div>
 	 	</div>
 	 	
-	 	<div class="title">
-	 		<span>分享推广</span>
-	 	</div>
 	 	
 	</div>
 </transition>

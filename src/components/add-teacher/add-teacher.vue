@@ -1,6 +1,6 @@
 <template>
 <transition name="fade" transition-mode="out-in">
-	<div class="page">
+	<div class="form">
 		<div class="title">
 	 		<span>指导老师信息填写</span>
 	 	</div>
@@ -140,7 +140,7 @@ methods: {
 
 <style scoped lang="scss">
 @import "~common/scss/variable";
-.page {
+.form {
 	width: 560px;
 	margin: 30px auto;
 	background: #fff;

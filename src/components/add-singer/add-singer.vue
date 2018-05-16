@@ -1,6 +1,6 @@
 <template>
 <transition name="fade" transition-mode="out-in">
-	<div class="page">
+	<div class="form">
 		<div class="title">
 	 		<span>声咖信息填写</span>
 	 	</div>
@@ -110,7 +110,6 @@ export default {
     },
 methods: {
 	handleAvatarSuccess(res, file) {
-		console.log(file.raw)
 	    this.imageUrl = URL.createObjectURL(file.raw);
 	},
 	beforeAvatarUpload(file) {
@@ -148,7 +147,7 @@ methods: {
 
 <style scoped lang="scss">
 @import "~common/scss/variable";
-.page {
+.form {
 	width: 560px;
 	margin: 30px auto;
 	background: #fff;
