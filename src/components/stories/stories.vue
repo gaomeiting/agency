@@ -1,5 +1,5 @@
 <template>
-<transition name="fade" transition-mode="out-in">
+<transition name="fade" mode="out-in">
 	<div class="page">
 	 	<div class="title">
 	 		<span>故事列表</span>

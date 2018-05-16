@@ -12,7 +12,16 @@
   overflow: hidden;
   white-space: nowrap;
 }
-
+//多行超出省略；
+@mixin ellipsis($line) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  /* autoprefixer: off */ 
+  -webkit-box-orient: vertical;
+  /* autoprefixer: on */ 
+  -webkit-line-clamp: $line;
+}
 // 扩展点击区域
 @mixin extend-click() {
   position: relative;

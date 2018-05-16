@@ -1,34 +1,34 @@
 <template>
-<transition name="fade" transition-mode="out-in">
+<transition name="fade" mode="out-in">
 	<div class="page">
 
 	 	<div class="title">
 	 		<span>声咖详情</span>
-	 		<span class="button">修改</span>
 	 	</div>
 	 	<div class="table-wrap">
 	 		<table-item @editTel="editTel"></table-item>
 	 	</div>
 	 	<div class="title">
-	 		<span>故事列表</span>
+	 		<span @click.stop="switchTable(index)" v-for=" (t, index) in title" :class="{active: currentIndex == index}">{{ t.name }}</span>
 	 	</div>
-	 	<div class="table-wrap">
+	 	<transition name="fade" mode="out-in">
+	 	<div class="table-wrap table" v-if="currentIndex == 0">
 	 		<story-list :playCls="playCls" @deleteStory="deleteStory" @switchState="switchState"></story-list>
+	 		<audio :src="currentSong.url" ref="audio"></audio>
+	 		<div class="pagination-wrap">
+		 		<el-pagination
+			      @size-change="handleSizeChange"
+			      @current-change="handleCurrentChange"
+			      :current-page.sync="currentPage3"
+			      :page-size="100"
+			      layout="prev, pager, next, jumper"
+			      :total="1000">
+			    </el-pagination>
+		 	</div>
 	 	</div>
-	 	<div class="pagination-wrap">
-	 		<el-pagination
-		      @size-change="handleSizeChange"
-		      @current-change="handleCurrentChange"
-		      :current-page.sync="currentPage3"
-		      :page-size="100"
-		      layout="prev, pager, next, jumper"
-		      :total="1000">
-		    </el-pagination>
-	 	</div>
-	 	<div class="title">
-	 		<span>精彩瞬间</span>
-	 	</div>
-	 	<div class="table-wrap table-top">
+	 	</transition>
+	 	<transition name="fade" mode="out-in">
+	 	<div class="table-wrap table-top table" v-if="currentIndex == 1">
 	 		<el-upload action="https://jsonplaceholder.typicode.com/posts/" list-type="picture-card" :on-preview="handlePictureCardPreview" :on-remove="handleRemove"  :file-list="fileList">
 			  <i class="el-icon-plus"></i>
 			</el-upload>
@@ -36,7 +36,7 @@
 			  <img width="100%" :src="dialogImageUrl" alt>
 			</el-dialog>
 	 	</div>
-	 	<audio :src="currentSong.url" ref="audio"></audio>
+	 	</transition>
 	</div>
 </transition>
 </template>
@@ -47,9 +47,18 @@ const SONGLISTLEN = 20
 export default {
 	data() {
 		return {
+			title: [
+				{
+					name: '故事列表'
+				},
+				{
+					name: '精彩瞬间'
+				}
+			],
 			currentSong: {
 				url: 'http://dl.stream.qqmusic.qq.com/C400003LxmX246aRC7.m4a?vkey=53DD0EE597E35BBF57F5155A3DA3CB3B950EF9A45985DEC41E8D7F7BF7CCB1171452A827AA1BE6D2F2FCD4945FEE1838EED5A62276F1C16B&guid=8182525974&uin=0&fromtag=66'
 			},
+			currentIndex: 0,
 			playCls: [],
 			currentPage3: 1,
 			dialogImageUrl: '',
@@ -87,6 +96,10 @@ export default {
 				//修改成功；
 
 			}
+		},
+		switchTable(index) {
+			if (index == this.currentIndex) return;
+			this.currentIndex = index;
 		},
 		switchState(index, cls) {
 			let arr = this.playCls.slice()
@@ -141,6 +154,12 @@ export default {
 	padding: 0 10px;
 	margin: 0 auto;
 	box-sizing: border-box;
+	
+}
+.table {
+	position: absolute;
+	left: 50%;
+	transform: translate3d(-50%, 0, 0);
 }
 .table-top {
 	padding-top: 20px;
@@ -149,16 +168,21 @@ export default {
 	display: flex;
 	width: 80%;
 	margin: 20px auto 0;
-	height: 40px;
-	line-height: 40px;
 	background: #fff;
 	text-indent: 26px;
 	font-size: 18px;
 	color: $color-text-ll;
 	border-bottom: 1px dashed $color-background;
-	padding: 10px 0;
+	padding: 0;
 	> span {
-		flex:1;
+		height: 40px;
+		line-height: 40px;
+		padding-right: 46px;
+		padding-top: 10px;
+		&.active {
+			color: #e5a23c;
+			border-bottom: 1px solid #e6a23c;
+		}
 	}
 	.button {
 		flex: 0 0 100px;

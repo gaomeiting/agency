@@ -1,10 +1,24 @@
 @import "./reset.scss";
 @import "./base.scss";
 @import "./icon.scss";
+html,body { 
+width:100%;
+min-width: 1200px;
+overflow-x:auto;
+}
+.page {
+    width: 80%;
+    min-width: 1200px;
+    position: absolute;
+    left: 50%;
+    transform: translate3d(-50%, 0, 0);
+    box-sizing: border-box;
+}
 .fade-enter-active, .fade-leave-active {
     opacity: 1;
     transition: .3s linear;
 }
+
 .fade-enter, .fade-leave-active {
     opacity: 0;
     transition: .3s linear;

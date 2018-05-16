@@ -1,5 +1,5 @@
 <template>
-<transition name="fade" transition-mode="out-in">
+<transition name="fade" mode="out-in">
 	<div class="page">
 	 	<!-- <div class="nav-wrap">
 	 				<nav-menu @selectNav="changeNavMenu" @signOut="signOut" :currentIndex="currentIndex"></nav-menu>
