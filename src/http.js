@@ -33,14 +33,14 @@ axios.interceptors.response.use(
             switch (error.response.status) {
                 case 401:
                     // 401 清除token信息并跳转到登录页面
-                    store.commit(types.SET_LOGOUT);
+                    store.commit('SET_LOGOUT');
                     router.replace({
                         path: 'login',
                         query: {redirect: router.currentRoute.fullPath}
                     })
             }
         }
-        // console.log(JSON.stringify(error));//console : Error: Request failed with status code 402
+        //console : Error: Request failed with status code 402
         return Promise.reject(error.response.data)
     });
 

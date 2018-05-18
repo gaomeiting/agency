@@ -28,11 +28,11 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-        '/front':{
-            target:'http://testapi.baikanmovie.com/front',
+        '/v2':{
+            target:'hhttps://douban.uieee.com/v2',
             changeOrigin:true,
             pathRewrite:{
-                '^/front':''
+                '^/v2':''
             }
         }
     },

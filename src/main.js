@@ -5,7 +5,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store'
-import axios from 'axios'
+import axios from './http'
 import VueLazyload from 'vue-lazyload'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
@@ -18,7 +18,7 @@ Vue.use(VueLazyload, {
 Vue.use(ElementUI);
 //设置打包请求地址
 /*axios.defaults.baseURL='http://bkdy.tunnel.qydev.com/bkdy'*/
-
+//Vue.prototype.axios = axios;
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

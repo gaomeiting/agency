@@ -1,1 +1,1 @@
-/*export const singer = state => state.singer;*/
+export const token = state => state.token;

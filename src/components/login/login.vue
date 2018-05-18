@@ -26,6 +26,7 @@
  	</transition>
 </template>
 <script>
+import { mapMutations } from 'vuex';
 export default {
 	data() {
 		return {
@@ -38,8 +39,17 @@ export default {
 	},
 	methods: {
 		goSinger() {
+			//提交登陆信息
+			//this.setLogin("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodmdhbWUiLCJzdWIiOiI0NTY0NTYxMjM1NiJ9.Alh9iNwa5EYq_ECPNSmT71FnSNOdcvOSoso4BzH3ls4")
+			/*this.axios('/v2/movie/in_theaters?start=0&count=8&city=%E5%8C%97%E4%BA%AC').then(res => {
+				console.log(123)
+			})*/
 			this.$router.push('/home')
-		}
+		},
+		...mapMutations({
+			setLogin: "SET_LOGIN",
+			setLogOut: "SET_LOGOUT"
+		})
 	}
 }
 </script>
