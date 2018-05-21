@@ -9,6 +9,7 @@ overflow-x:auto;
 .page {
     width: 80%;
     min-width: 1200px;
+    min-height: 100%;
     position: absolute;
     left: 50%;
     transform: translate3d(-50%, 0, 0);

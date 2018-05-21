@@ -1,8 +1,12 @@
 <template>
 <transition name="fade" mode="out-in">
-	<div class="page">
+	<div class="page" v-loading="loading">
 	 	<div class="title">
 	 		<span>故事列表</span>
+
+		 	<div class="search-wrap">
+		 		<search-box @queryChange="queryChange" ref="searchBox"></search-box>
+		 	</div>
 	 	</div>
 	 	<div class="table-wrap">
 	 		<story-list type="story" :playCls="playCls" @deleteStory="deleteStory" @switchState="switchState"></story-list>
@@ -22,13 +26,14 @@
 </transition>
 </template>
 <script>
-/*import NavMenu from 'base/nav-menu/nav-menu';*/
+import SearchBox from 'base/search-box/search-box';
 import TableList from 'base/table-list/table-list';
 import StoryList from 'base/story-list/story-list';
 const SONGLISTLEN = 20
 export default {
 	data() {
 		return {
+			loading: false,
 			currentSong: {
 				url: 'http://dl.stream.qqmusic.qq.com/C400003LxmX246aRC7.m4a?vkey=53DD0EE597E35BBF57F5155A3DA3CB3B950EF9A45985DEC41E8D7F7BF7CCB1171452A827AA1BE6D2F2FCD4945FEE1838EED5A62276F1C16B&guid=8182525974&uin=0&fromtag=66'
 			},
@@ -78,14 +83,17 @@ export default {
 	},
 	components: {
 		TableList,
-		StoryList
+		StoryList,
+		SearchBox
 	}
 }
 </script>
 
 <style scoped lang="scss">
 @import "~common/scss/variable";
-
+.search-wrap {
+	margin-right: 20px;
+}
 .table-wrap {
 	width: 80%;
 	background: #fff;

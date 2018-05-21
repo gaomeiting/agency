@@ -1,12 +1,12 @@
 <template>
 <transition name="fade" mode="out-in">
-	<div class="page">
+	<div class="page" v-loading="loading">
 
 	 	<div class="title">
 	 		<span>声咖详情</span>
 	 	</div>
 	 	<div class="table-wrap">
-	 		<table-item @editTel="editTel"></table-item>
+	 		<table-item type="singer" @editTel="editTel" @uploadStory="uploadStory"></table-item>
 	 	</div>
 	 	<div class="title">
 	 		<span @click.stop="switchTable(index)" v-for=" (t, index) in title" :class="{active: currentIndex == index}">{{ t.name }}</span>
@@ -47,6 +47,7 @@ const SONGLISTLEN = 20
 export default {
 	data() {
 		return {
+			loading: false,
 			title: [
 				{
 					name: '故事列表'
@@ -97,6 +98,9 @@ export default {
 
 			}
 		},
+		uploadStory() {
+			this.$router.push('/uploadStory')
+		},
 		switchTable(index) {
 			if (index == this.currentIndex) return;
 			this.currentIndex = index;
@@ -127,6 +131,7 @@ export default {
 	        console.log(file, fileList);
 	    },
 	    handlePictureCardPreview(file) {
+	    	console.log(file, 123)
 	        this.dialogImageUrl = file.url;
 	        this.dialogVisible = true;
 	        console.log(this.dialogVisible)

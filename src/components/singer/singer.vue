@@ -1,11 +1,11 @@
 <template>
 <transition name="fade" mode="out-in">
-	<div class="page">
-	 	<!-- <div class="nav-wrap">
-	 				<nav-menu @selectNav="changeNavMenu" @signOut="signOut" :currentIndex="currentIndex"></nav-menu>
-	 	</div> -->
+	<div class="page" v-loading="loading">
 	 	<div class="title">
 	 		<span>声咖列表</span>
+	 		<div class="search-wrap">
+	 			<search-box @queryChange="queryChange" ref="searchBox"></search-box>
+	 		</div>
 	 		<span class="button" @click="goAdd">添加声咖</span>
 	 	</div>
 	 	<div class="table-wrap">
@@ -13,29 +13,30 @@
 	 	</div>
 	 	<div class="pagination-wrap">
 	 		<el-pagination
-		      @size-change="handleSizeChange"
-		      @current-change="handleCurrentChange"
-		      :current-page.sync="currentPage3"
-		      :page-size="100"
-		      layout="prev, pager, next, jumper"
-		      :total="1000">
-		    </el-pagination>
+	 			      @size-change="handleSizeChange"
+	 			      @current-change="handleCurrentChange"
+	 			      :current-page.sync="currentPage3"
+	 			      :page-size="100"
+	 			      layout="prev, pager, next, jumper"
+	 			      :total="1000">
+	 			    </el-pagination>
 	 	</div>
 	</div>
 </transition>
 </template>
 <script>
-/*import NavMenu from 'base/nav-menu/nav-menu';*/
+import SearchBox from 'base/search-box/search-box';
+import Loading from 'base/loading/loading';
 import TableList from 'base/table-list/table-list';
 export default {
 	data() {
 		return {
-			
+			loading: false,
 			currentPage3: 1
 		}
 	},
 	methods: {
-		
+		queryChange(query) {},
 		handleSizeChange() {
 
 		},
@@ -54,7 +55,9 @@ export default {
 	
 	},
 	components: {
-		TableList
+		TableList,
+		SearchBox,
+		Loading
 	}
 }
 </script>
@@ -68,6 +71,9 @@ export default {
 	padding: 0 10px;
 	margin: 0 auto;
 	box-sizing: border-box;
+}
+.search-wrap {
+	margin-right: 10px;
 }
 .title {
 	display: flex;

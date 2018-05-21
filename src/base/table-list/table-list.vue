@@ -47,7 +47,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="btn" v-if="type == 'singer'"><el-button type="primary" round>上传精彩瞬间</el-button></div>
+				<!-- <div class="btn" v-if="type == 'singer'"><el-button type="primary" round>上传精彩瞬间</el-button></div> -->
 				<div class="icon" @click.stop="switchTip(index)" v-if=" type !== 'intention'">
 					<i class="iconfont icon-bianji"></i><span>编辑</span>
 					<div class="tip-select-wrap">

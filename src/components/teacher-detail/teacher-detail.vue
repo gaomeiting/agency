@@ -1,17 +1,17 @@
 <template>
 <transition name="fade" transition-mode="out-in">
-	<div class="page">
+	<div class="page" v-loading="loading">
 
 	 	<div class="title">
 	 		<span>指导老师详情</span>
-	 		<span class="button">修改</span>
+	 		<!-- <span class="button">修改</span> -->
 	 	</div>
 	 	<div class="table-wrap">
 	 		<table-item @editTel="editTel" type="teacher"></table-item>
 	 	</div>
 	 	<div class="title">
 	 		<span>故事列表</span>
-	 		<span class="button">删除全部</span>
+	 		<!-- <span class="button">删除全部</span> -->
 	 	</div>
 	 	<div class="table-wrap">
 	 		<story-list type="teacher" :playCls="playCls" @deleteStory="deleteStory" @switchState="switchState"></story-list>
@@ -38,6 +38,7 @@ const SONGLISTLEN = 20
 export default {
 	data() {
 		return {
+			loading: false,
 			currentSong: {
 				url: 'http://dl.stream.qqmusic.qq.com/C400003LxmX246aRC7.m4a?vkey=53DD0EE597E35BBF57F5155A3DA3CB3B950EF9A45985DEC41E8D7F7BF7CCB1171452A827AA1BE6D2F2FCD4945FEE1838EED5A62276F1C16B&guid=8182525974&uin=0&fromtag=66'
 			},

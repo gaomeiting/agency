@@ -11,6 +11,7 @@ const Stories=resolve => require(['@/components/stories/stories'], resolve);
 const Teacher=resolve => require(['@/components/teacher/teacher'], resolve);
 const TeacherDetail=resolve => require(['@/components/teacher-detail/teacher-detail'], resolve);
 const Intention=resolve => require(['@/components/intention/intention'], resolve);
+const UploadStory=resolve => require(['@/components/upload-story/upload-story'], resolve);
 
 Vue.use(Router)
 
@@ -30,7 +31,8 @@ const routes=[
     {path:'/teacher', component: Teacher },
     {path: '/teacher/:id', component: TeacherDetail },
     {path:'/stories', component: Stories },
-    {path:'/intention', component: Intention }
+    {path:'/intention', component: Intention },
+    {path:'/uploadStory', component: UploadStory }
    
 ]
 // 页面刷新时，重新赋值token

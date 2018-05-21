@@ -1,8 +1,11 @@
 <template>
 <transition name="fade" transition-mode="out-in">
-	<div class="page">
+	<div class="page" v-loading="loading">
 	 	<div class="title">
 	 		<span>指导老师列表</span>
+	 		<div class="search-wrap">
+	 			<search-box @queryChange="queryChange" placeholder="搜索老师" ref="searchBox"></search-box>
+	 		</div>
 	 		<span class="button" @click="goAdd">添加老师</span>
 	 	</div>
 	 	<div class="table-wrap">
@@ -22,17 +25,18 @@
 </transition>
 </template>
 <script>
-/*import NavMenu from 'base/nav-menu/nav-menu';*/
+import SearchBox from 'base/search-box/search-box';
 import TableList from 'base/table-list/table-list';
 export default {
 	data() {
 		return {
-			
+			loading: false,
 			currentPage3: 1
 		}
 	},
 	methods: {
-		
+		queryChange(query) {
+		},
 		handleSizeChange() {
 
 		},
@@ -51,7 +55,8 @@ export default {
 	
 	},
 	components: {
-		TableList
+		TableList,
+		SearchBox
 	}
 }
 </script>
@@ -93,6 +98,9 @@ export default {
 		margin-right: 20px;
 		margin-top: 4px;
 	}
+}
+.search-wrap {
+	margin-right: 10px;
 }
 .pagination-wrap {
 	width: 80%;

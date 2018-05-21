@@ -108,14 +108,26 @@ methods: {
 	beforeAvatarUpload(file) {
 		const isJPG = file.type === 'image/jpeg';
 		const isLt2M = file.size / 1024 / 1024 < 2;
-
+		const isLtBase64 = file.size  < 10000;
 		if (!isJPG) {
 		  this.$message.error('上传头像图片只能是 JPG 格式!');
 		}
 		if (!isLt2M) {
 		  this.$message.error('上传头像图片大小不能超过 2MB!');
 		}
+		if(isLtBase64) {
+			this.toBase64(file);
+			this.autoUpload = false;
+			//console.log(this.autoUpload)
+		}
 		return isJPG && isLt2M;
+	},
+	toBase64(file) {
+		let reader = new FileReader();     
+        reader.readAsDataURL(file);     
+        reader.onload = function(e){  
+          this.image_base64=this.result.split(",")[1]; 
+        }
 	},
 	submitForm(formName) {
 		if(!this.imageUrl) {

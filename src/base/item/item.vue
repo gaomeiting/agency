@@ -7,6 +7,7 @@
 				</div>
 				<div class="content">
 					<div class="name">
+						<div class="left">
 						<div class="name-item">
 							<i class="iconfont icon-xingmingyonghumingnicheng"></i><span>李文山</span>
 						</div>
@@ -37,6 +38,10 @@
 						</div>
 						<div class="name-item" v-if="type == 'teacher'">
 							<i class="iconfont icon-toupiao"></i><span>1959151878</span>
+						</div>
+						</div>
+						<div class="right" v-if="type == 'singer'">
+							<el-button type="primary" round @click.stop="uploadStory">上传精彩故事</el-button>
 						</div>
 					</div>
 					<div class="info">
@@ -72,6 +77,9 @@ export default {
 		},
 		editTel(e) {
 			this.$emit('editTel', e)
+		},
+		uploadStory() {
+			this.$emit('uploadStory')
 		}
 	},
 	components: {
@@ -95,6 +103,18 @@ export default {
 		}
 		.name {
 			display: flex;
+			> div {
+				display: flex;
+			}
+			.left {
+				flex: 1;
+			}
+			.right {
+				display: flex;
+				flex: 0 0 150px;
+				width: 150px;
+				justify-content: end;
+			}
 			.name-item {
 				margin-right: 20px;
 				padding-right: 8px;
