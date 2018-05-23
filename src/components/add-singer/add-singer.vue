@@ -45,7 +45,7 @@
 		    <el-input type="textarea" v-model="ruleForm.desc"></el-input>
 		  </el-form-item>
 		  <el-form-item label="上传头像">
-				<el-upload class="avatar-uploader" action="http://192.168.100.57:8080/hversion/upload/light" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :auto-upload="autoUpload">
+				<el-upload class="avatar-uploader" action="/hversion/upload" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :auto-upload="autoUpload">
 					<img v-if="imageUrl" :src="imageUrl" class="avatar">
 					<i v-else class="el-icon-plus avatar-uploader-icon"></i>
 				</el-upload>

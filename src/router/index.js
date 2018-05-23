@@ -24,19 +24,38 @@ const routes=[
             requireAuth: true,
         }
     },
-    {path:'/singer', component: Singer},
-    {path: '/singer/:id', component: SingerDetail },
-    {path:'/addSinger', component: AddSinger },
-    {path:'/addTeacher', component: AddTeacher },
-    {path:'/teacher', component: Teacher },
-    {path: '/teacher/:id', component: TeacherDetail },
-    {path:'/stories', component: Stories },
-    {path:'/intention', component: Intention },
-    {path:'/uploadStory', component: UploadStory }
+    {path:'/singer', component: Singer, meta: {
+            requireAuth: true,
+        }},
+    {path: '/singer/:id', component: SingerDetail, meta: {
+            requireAuth: true,
+        } },
+    {path:'/addSinger', component: AddSinger, meta: {
+            requireAuth: true,
+        } },
+    {path:'/addTeacher', component: AddTeacher, meta: {
+            requireAuth: true,
+        } },
+    {path:'/teacher', component: Teacher, meta: {
+            requireAuth: true,
+        } },
+    {path: '/teacher/:id', component: TeacherDetail, meta: {
+            requireAuth: true,
+        } },
+    {path:'/stories', component: Stories, meta: {
+            requireAuth: true,
+        } },
+    {path:'/intention', component: Intention, meta: {
+            requireAuth: true,
+        } },
+    {path:'/uploadStory', component: UploadStory, meta: {
+            requireAuth: true,
+        } }
    
 ]
 // 页面刷新时，重新赋值token
 if (window.localStorage.getItem('token')) {
+    
     store.commit('SET_LOGIN', window.localStorage.getItem('token'))
 }
 const router= new Router({

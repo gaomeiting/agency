@@ -29,7 +29,7 @@
 	 	</transition>
 	 	<transition name="fade" mode="out-in">
 	 	<div class="table-wrap table-top table" v-if="currentIndex == 1">
-	 		<el-upload action="https://jsonplaceholder.typicode.com/posts/" list-type="picture-card" :on-preview="handlePictureCardPreview" :on-remove="handleRemove"  :file-list="fileList">
+	 		<el-upload action="http://192.168.100.57:8080/hversion/upload" multiple list-type="picture-card" :on-preview="handlePictureCardPreview" :on-remove="handleRemove"  :file-list="fileList">
 			  <i class="el-icon-plus"></i>
 			</el-upload>
 			<el-dialog :visible.sync="dialogVisible">

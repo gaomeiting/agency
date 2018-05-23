@@ -9,7 +9,7 @@
 	 		<el-form-item label="上传音频文件">
 				<el-upload
 				  class="upload-demo"
-				  action="/upload/audio"
+				  action="/hversion/upload"
 				  :on-success="handleAvatarSuccess"
   				  :before-upload="beforeAvatarUpload">
 				  <el-button size="small" type="primary">点击上传</el-button>
@@ -47,6 +47,7 @@
 </transition>
 </template>
 <script>
+import {addSinger} from 'api/singers';
 export default {
     data() {
       return {
@@ -54,75 +55,76 @@ export default {
 		loading: false,
       	options: {
       		teacherInit :[{
-	          value: '选项1',
+	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa5',
 	          label: '黄金糕'
 	        }, {
-	          value: '选项2',
+	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa6',
 	          label: '双皮奶'
 	        }, {
-	          value: '选项3',
+	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa8',
 	          label: '蚵仔煎'
 	        }, {
-	          value: '选项4',
+	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa8',
 	          label: '龙须面'
 	        }, {
-	          value: '选项5',
+	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa8',
 	          label: '北京烤鸭'
 	        }, {
 	        }], 
       		teacher: [{
-	          value: '选项1',
+	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa8',
 	          label: '黄金糕'
 	        }, {
-	          value: '选项2',
+	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa8',
 	          label: '双皮奶'
 	        }, {
-	          value: '选项3',
+	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa8',
 	          label: '蚵仔煎'
 	        }, {
-	          value: '选项4',
+	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa8',
 	          label: '龙须面'
 	        }, {
-	          value: '选项5',
+	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa8',
 	          label: '北京烤鸭'
 	        },  {
 	        }],
         	story: [{
-	          value: '选项1',
+	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa8',
 	          label: '黄金糕'
 	        }, {
-	          value: '选项2',
+	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa8',
 	          label: '双皮奶'
 	        }, {
-	          value: '选项3',
+	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa8',
 	          label: '蚵仔煎'
 	        }, {
-	          value: '选项4',
+	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa8',
 	          label: '龙须面'
 	        }, {
-	          value: '选项5',
+	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa8',
 	          label: '双皮奶'
 	        }, {
-	          value: '选项6',
+	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa8',
 	          label: '蚵仔煎'
 	        }, {
-	          value: '选项7',
+	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa8',
 	          label: '龙须面'
 	        }, {
-	          value: '选项8',
+	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa8',
 	          label: '双皮奶'
 	        }, {
-	          value: '选项9',
+	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa8',
 	          label: '蚵仔煎'
 	        }, {
-	          value: '选项10',
+	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa8',
 	          label: '龙须面'
 	        }, {
-	          value: '选项11',
+	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa8',
 	          label: '北京烤鸭'
 	        }]
       	} ,
         ruleForm: {
+        	uid: '',
           story: '',
           teacher: ''
         },
@@ -143,6 +145,7 @@ methods: {
     },
 	handleAvatarSuccess(res, file) {
 	    this.imageUrl = URL.createObjectURL(file.raw);
+	    this.ruleForm.uid = file.uid;
 	},
 	beforeAvatarUpload(file) {
 		console.log(file)
@@ -178,13 +181,25 @@ methods: {
         }
     },
 	submitForm(formName) {
-		if(!this.imageUrl) {
-			window.alert("请先上传头像")
+		if(!this.ruleForm.uid) {
+			window.alert("请先上传故事")
 			return;
 		}
 		this.$refs[formName].validate((valid) => {
 		  if (valid) {
-		    alert('submit!');
+		    addSinger('/hversion/audio', {
+		    	audioId: this.ruleForm.uid,
+		    	storyId: this.ruleForm.story,
+		    	narratorId: this.ruleForm.teacher
+		    }).then(res => {
+		    	let _this = this;
+		    	this.$alert('创建成功', '', {
+		          confirmButtonText: '确定',
+		          callback: action => {
+		            this.$router.push('/singer')
+		          }
+		        });
+		    })
 		  } else {
 		    console.log('error submit!!');
 		    return false;
