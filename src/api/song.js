@@ -1,16 +1,7 @@
 import axios from "axios";
-export function getLyric(mid) {
-	let url = "api/lyric"
-	let data = Object.assign({}, commonParams, {
-		pcachetime : +new Date(),
-		songmid :  mid,
-		loginUin : 0,
-		hostUin : 0,
-		format : 'json',
-		platform : 'yqq',
-		needNewCode : 0,
-	})
-	return axios.get(url,{
+export function getSingers(url) {
+	let path = `/api/${url}`;
+	return axios.get(path,{
 		params: data
 	}).then((res) => {
 		return Promise.resolve(res.data)

@@ -17,6 +17,7 @@
 	  <el-form-item prop="date" label="生日" required>
         <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date" style="width: 100%;"></el-date-picker>
       </el-form-item>
+      
 	  <el-form-item label="手机号码" required  prop="tel">
 	     <el-input v-model="ruleForm.tel"></el-input>
 	  </el-form-item>
@@ -46,60 +47,60 @@
 </template>
 <script>
 export default {
-    data() {
-      return {
-      	imageUrl: '',
-      	ruleForm: {
-          name: '',
-          sex: '',
-          date: '',
-          tel: '',
-		location: '',
-          desc: '',
-          qq: '',
-          email: ''
-        },
-        rules: {
-          name: [
-            { required: true, message: '请输入姓名', trigger: 'blur' },
-            { message: '请输入正确姓名', trigger: 'blur' }
-          ],
-          sex: [
-            { required: true, message: '请选择性别', trigger: 'change' }
-          ],
-          date: [
-            { required: true, message: '请选择日期', trigger: 'change' }
-          ],
-          tel: [
-            { required: true, message: '请输入手机号', trigger: 'blur' },
-            {validator:function(rule,value,callback) {
-	            if(/^1[34578]\d{9}$/.test(value) == false){
-	                callback(new Error("请输入正确的手机号"));
-	            }else{
-	                callback();
-	            }
-	        }, trigger: 'blur'}
-          ],
-          qq: [
-            {validator:function(rule,value,callback) {
-
-	            if(value && /^[1-9][0-9]{4,14}$/.test(value) == false){
-	                callback(new Error("请输入正确的qq号"));
-	            }else{
-	                callback();
-	            }
-	        }, trigger: 'blur'}
-          ],
-          email: [
-             { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
-          ],
-          desc: [
-            { required: true, message: '请填写个人简介', trigger: 'blur' },
-            { min: 15, max: 150, message: '长度在 15 到 150 个字符', trigger: 'blur' }
-          ]
-        }
-      };
+data() {
+  return {
+  	imageUrl: '',
+  	ruleForm: {
+		name: '',
+      sex: '',
+      date: '',
+      tel: '',
+	location: '',
+      desc: '',
+      qq: '',
+      email: ''
     },
+    rules: {
+      name: [
+        { required: true, message: '请输入姓名', trigger: 'blur' },
+        { message: '请输入正确姓名', trigger: 'blur' }
+      ],
+      sex: [
+        { required: true, message: '请选择性别', trigger: 'change' }
+      ],
+      date: [
+        { required: true, message: '请选择日期', trigger: 'change' }
+      ],
+      tel: [
+        { required: true, message: '请输入手机号', trigger: 'blur' },
+        {validator:function(rule,value,callback) {
+            if(/^1[34578]\d{9}$/.test(value) == false){
+                callback(new Error("请输入正确的手机号"));
+            }else{
+                callback();
+            }
+        }, trigger: 'blur'}
+      ],
+      qq: [
+        {validator:function(rule,value,callback) {
+
+            if(value && /^[1-9][0-9]{4,14}$/.test(value) == false){
+                callback(new Error("请输入正确的qq号"));
+            }else{
+                callback();
+            }
+        }, trigger: 'blur'}
+      ],
+      email: [
+         { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+      ],
+      desc: [
+        { required: true, message: '请填写个人简介', trigger: 'blur' },
+        { min: 15, max: 150, message: '长度在 15 到 150 个字符', trigger: 'blur' }
+      ]
+    }
+  };
+},  
 methods: {
 	handleAvatarSuccess(res, file) {
 		console.log(file.raw)
@@ -130,12 +131,13 @@ methods: {
         }
 	},
 	submitForm(formName) {
-		if(!this.imageUrl) {
+		/*if(!this.imageUrl) {
 			window.alert("请先上传头像")
 			return;
-		}
+		}*/
 		this.$refs[formName].validate((valid) => {
 		  if (valid) {
+		  	console.log(this.ruleForm)
 		    alert('submit!');
 		  } else {
 		    console.log('error submit!!');

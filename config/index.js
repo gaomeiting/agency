@@ -28,11 +28,11 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-        '/v2':{
-            target:'hhttps://douban.uieee.com/v2',
+        '/hversion':{
+            target:'http://192.168.100.57:8080/hversion',
             changeOrigin:true,
             pathRewrite:{
-                '^/v2':''
+                '^/hversion':''
             }
         }
     },

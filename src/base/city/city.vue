@@ -1,18 +1,30 @@
 <template>
   <div class="citiesLinkage">
-      <select class="provinces" v-model="province"><option v-for="(item,key) in provincesName" :value="key">{{item}}</option></select><select class="citys" v-model="city"><option v-for="(item,key) in citysName" :value="key">{{item}}</option></select><select class="countys" v-model="county"><option v-for="(item,key) in countysName" :value="key">{{item}}</option></select>
+      <!-- <el-select v-model="province" placeholder="请选择">
+        <el-option
+          v-for="(item,key) in provincesName"
+          :key="item.value"
+          :label="item.value"
+          :value="item.value">
+        </el-option>
+      </el-select> -->
+      <select class="citys" v-model="city">
+        <option v-for="(item,key) in citysName" :value="key">{{item}}</option>
+      </select><select class="countys" v-model="county">
+        <option v-for="(item,key) in countysName" :value="key">{{item}}</option>
+      </select>
   </div>
 </template>
 
 <script>
-import { addrobj, addrname } from '../assets/addr.js'
+import { addrobj, addrname } from 'common/js/addr.js'
 
 export default {
   data () {
     return {
-      province:10,
-      city:20,
-      county:31
+      province:'',
+      city:'',
+      county:''
     }
   },
   computed:{

@@ -9,7 +9,7 @@
 	 		<el-form-item label="上传音频文件">
 				<el-upload
 				  class="upload-demo"
-				  action="https://jsonplaceholder.typicode.com/posts/"
+				  action="/upload/audio"
 				  :on-success="handleAvatarSuccess"
   				  :before-upload="beforeAvatarUpload">
 				  <el-button size="small" type="primary">点击上传</el-button>

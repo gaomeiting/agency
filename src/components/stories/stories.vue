@@ -48,6 +48,7 @@ export default {
 		}
 	},
 	methods: {
+		queryChange() {},
 		switchState(index, cls) {
 			let arr = this.playCls.slice()
 			arr[index] = cls === 'icon-bofang' ? 'icon-bofang1' : 'icon-bofang';

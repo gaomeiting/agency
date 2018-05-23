@@ -25,6 +25,7 @@
 </transition>
 </template>
 <script>
+import {getSingers} from 'api/singers';
 import SearchBox from 'base/search-box/search-box';
 import Loading from 'base/loading/loading';
 import TableList from 'base/table-list/table-list';
@@ -34,6 +35,13 @@ export default {
 			loading: false,
 			currentPage3: 1
 		}
+	},
+	created() {
+		getSingers('/hversion/childstar').then(res => {
+			console.log(res)
+		}).catch(err => {
+			console.log(err)
+		})
 	},
 	methods: {
 		queryChange(query) {},

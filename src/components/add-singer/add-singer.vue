@@ -4,6 +4,7 @@
 		<div class="title">
 	 		<span>声咖信息填写</span>
 	 	</div>
+	 	<!-- <city></city> -->
 		<el-form label-width="100px" :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
 		  <el-form-item label="姓名" prop="name">
 		    <el-input v-model="ruleForm.name"></el-input>
@@ -20,21 +21,31 @@
 		  <el-form-item label="手机号码" required  prop="tel">
 		     <el-input v-model="ruleForm.tel"></el-input>
 		  </el-form-item>
-		  <el-form-item label="选择地区" required  prop="location">
-			    <el-select v-model="ruleForm.location" filterable placeholder="请选择">
-			    <el-option
-			      v-for="item in options"
-			      :key="item.value"
-			      :label="item.label"
-			      :value="item.value">
-			    </el-option>
-		  </el-select>
-		  </el-form-item>
+		  <!-- <el-form-item label="选择地区" required  prop="location">
+		  			    <el-select v-model="ruleForm.location" filterable placeholder="请选择">
+		  			    <el-option
+		  			      v-for="item in options"
+		  			      :key="item.value"
+		  			      :label="item.label"
+		  			      :value="item.value">
+		  			    </el-option>
+		  		</el-select>
+		  			
+		  </el-form-item> -->
+		  <el-form-item  label="所在地区" required  prop="location">
+				<el-cascader
+					:options="CityInfo"
+					v-model="ruleForm.location"
+					:change-on-select="true"
+					:filterable="true"
+					:clearable="true">
+				</el-cascader>
+			</el-form-item>
 		  <el-form-item label="个人简介" required prop="desc">
 		    <el-input type="textarea" v-model="ruleForm.desc"></el-input>
 		  </el-form-item>
 		  <el-form-item label="上传头像">
-				<el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :auto-upload="autoUpload">
+				<el-upload class="avatar-uploader" action="http://192.168.100.57:8080/hversion/upload/light" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :auto-upload="autoUpload">
 					<img v-if="imageUrl" :src="imageUrl" class="avatar">
 					<i v-else class="el-icon-plus avatar-uploader-icon"></i>
 				</el-upload>
@@ -48,9 +59,12 @@
 </transition>
 </template>
 <script>
+import { CityInfo } from 'common/js/city-data';
+import {addSinger} from 'api/singers';
 export default {
     data() {
       return {
+      	CityInfo: CityInfo,
       	imageUrl: '',
       	image_base64: '',
       	autoUpload: true,
@@ -75,7 +89,8 @@ export default {
           sex: '',
           date: '',
           tel: '',
-		location: '',
+          sLocation: '',
+		location: [],
           desc: ''
         },
         rules: {
@@ -110,8 +125,10 @@ export default {
         }
       };
     },
-methods: {
+created() {
 
+},
+methods: {
 	handleAvatarSuccess(res, file) {
 	    this.imageUrl = URL.createObjectURL(file.raw);
 	},
@@ -120,7 +137,6 @@ methods: {
 		const isJPG = file.type === 'image/jpeg';
 		const isLt2M = file.size / 1024 / 1024 < 2;
 		const isLtBase64 = file.size  < 10000;
-		console.log(file.size)
 		if (!isJPG) {
 		  this.$message.error('上传头像图片只能是 JPG 格式!');
 		}
@@ -129,7 +145,7 @@ methods: {
 		}
 		if(isLtBase64) {
 			this.toBase64(file);
-			this.autoUpload = false;
+			
 		}
 		return isJPG && isLt2M;
 	},
@@ -138,25 +154,71 @@ methods: {
         reader.readAsDataURL(file);     
         reader.onload = function(e){  
           this.image_base64=this.result.split(",")[1]; 
+          this.autoUpload = false;
         }
 	},
 	submitForm(formName) {
-		if(!this.imageUrl) {
-			window.alert("请先上传头像")
-			return;
-		}
+		
 		this.$refs[formName].validate((valid) => {
 		  if (valid) {
-		    alert('submit!');
+		  	//RealName, gender, city, birthDate, slogan, phone, avator 
+			console.log(this.image_base64)
+			this.ruleForm.sLocation = `${this.myAddressCity(this.ruleForm.location[0])}/${this.myAddressErae(this.ruleForm.location[1])}/${this.myAddressMinerae(this.ruleForm.location[2])}`
+		    addSinger('/hversion/childstar', {
+		    	realName: this.ruleForm.name,
+		    	gender: this.ruleForm.sex,
+		    	city: this.ruleForm.sLocation,
+		    	birthDate: this.ruleForm.date,
+		    	slogan: this.ruleForm.desc,
+		    	phone: this.ruleForm.tel,
+		    	avatorId:  this.image_base64
+		    }).then(res => {
+		    	let _this = this;
+		    	this.$alert('创建成功', '', {
+		          confirmButtonText: '确定',
+		          callback: action => {
+		            this.$router.push('/singer')
+		          }
+		        });
+		    })
 		  } else {
-		    console.log('error submit!!');
+		    console.log('error submit!!', 134);
 		    return false;
 		  }
 		})
 	},
 	resetForm(formName) {
 		this.$refs[formName].resetFields();
+	},
+	myAddressCity(value){
+		for(let y in this.CityInfo){
+			if(this.CityInfo[y].value == value){
+				return value = this.CityInfo[y].label
+			}
+		}
+	},
+	myAddressErae(value){
+		for(let y in this.CityInfo){
+			for(let z in this.CityInfo[y].children){
+				if(this.CityInfo[y].children[z].value == value && value!=undefined){
+					return value = this.CityInfo[y].children[z].label;
+				}
+			}
+		}
+	},
+	myAddressMinerae(value){
+		for(let y in this.CityInfo){
+			for(let z in this.CityInfo[y].children){
+				for(let i in this.CityInfo[y].children[z].children){
+					if(this.CityInfo[y].children[z].children[i].value == value && value!=undefined){
+						return value = this.CityInfo[y].children[z].children[i].label
+					}
+				}
+			}
+		}
 	}
+},
+components: {
 }
 }
 </script>

@@ -19,7 +19,7 @@
  				<el-checkbox v-model="checked">记住密码</el-checkbox>
  			</div>
  			<div class="item">
- 				<p class="btn" @click.stop="goSinger">登录</p>
+ 				<p class="btn" @click.stop="postLogin">登录</p>
  			</div>
  		</div>
  	</div>
@@ -27,6 +27,7 @@
 </template>
 <script>
 import { mapMutations } from 'vuex';
+import { loginCompany } from 'api/login';
 export default {
 	data() {
 		return {
@@ -37,15 +38,39 @@ export default {
 			checked: true
 		}
 	},
+	created() {
+		const token = window.localStorage.getItem('token');
+		if(token) {
+			this.setLogin(token);
+			this.$router.push('/home');
+		}
+	},
 	methods: {
-		goSinger() {
+		postLogin() {
+			var formData = new FormData();
+			formData.append('username', this.user.name);
+			formData.append('password', this.user.password);
+			loginCompany('/hversion/vendor/login', formData).then(res => {
+				this.setLogin(res);
+				this.$router.push('/home');
+			}).catch(err => {
+				console.log(err,234)
+			})
+		},
+		
+		/*goSinger() {
+			const token = window.localStorage.getItem('token');
+			if(token) {
+				
+			}
+			else {
+				this.postLogin();
+			}
 			//提交登陆信息
 			//this.setLogin("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodmdhbWUiLCJzdWIiOiI0NTY0NTYxMjM1NiJ9.Alh9iNwa5EYq_ECPNSmT71FnSNOdcvOSoso4BzH3ls4")
-			/*this.axios('/v2/movie/in_theaters?start=0&count=8&city=%E5%8C%97%E4%BA%AC').then(res => {
-				console.log(123)
-			})*/
-			this.$router.push('/home')
-		},
+			
+			
+		},*/
 		...mapMutations({
 			setLogin: "SET_LOGIN",
 			setLogOut: "SET_LOGOUT"
