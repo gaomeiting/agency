@@ -6,14 +6,14 @@
 	 		<span>声咖详情</span>
 	 	</div>
 	 	<div class="table-wrap">
-	 		<table-item type="singer" @editTel="editTel" @uploadStory="uploadStory"></table-item>
+	 		<table-item type="singer" @editTel="editTel" @uploadStory="uploadStory" :singer="singer"></table-item>
 	 	</div>
 	 	<div class="title">
 	 		<span @click.stop="switchTable(index)" v-for=" (t, index) in title" :class="{active: currentIndex == index}">{{ t.name }}</span>
 	 	</div>
 	 	<transition name="fade" mode="out-in">
 	 	<div class="table-wrap table" v-if="currentIndex == 0">
-	 		<story-list :playCls="playCls" @deleteStory="deleteStory" @switchState="switchState"></story-list>
+	 		<story-list :list="singer.stories" :playCls="playCls" @deleteStory="deleteStory" @switchState="switchState"></story-list>
 	 		<audio :src="currentSong.url" ref="audio"></audio>
 	 		<div class="pagination-wrap">
 		 		<el-pagination
@@ -41,6 +41,8 @@
 </transition>
 </template>
 <script>
+import { getSingers, modifySinger } from 'api/singers';
+import { CreateSinger } from 'common/js/singer';
 import TableItem from 'base/item/item';
 import StoryList from 'base/story-list/story-list';
 const SONGLISTLEN = 20
@@ -48,6 +50,7 @@ export default {
 	data() {
 		return {
 			loading: false,
+			singer: {},
 			title: [
 				{
 					name: '故事列表'
@@ -68,33 +71,40 @@ export default {
 		}
 	},
 	created() {
+		let id = this.$route.params.id;
+		let url = `/hversion/childstar/${id}`;
+		getSingers(url).then(res => {
+			this.singer = this._normalizeData(res)
+		}).catch(err => {
+			console.log(err)
+		})
 		//设置播放状态；
 		for(let i = 0; i < SONGLISTLEN; i++) {
 			this.playCls.push('icon-bofang')
 		}
 	},
 	methods: {
-		
 		ready() {
 		},
 		error() {
 		},
-		editTel(e) {
+		editTel(dom) {
+			console.log(123)
+				
 			//校验手机号
-			const ev = e.currentTarget
-			console.log(ev)
 			//console.log(ev)
-			if(/^1[34578]\d{9}$/.test(ev.value) == false) {
+			if(/^1[34578]\d{9}$/.test(dom.innerHTML) == false) {
 				//this.e.currentTarget.innerHTML=""
 				this.$alert('请输入正确的手机号', '', {
 		          confirmButtonText: '确定',
 		          callback: action => {
-		            ev.innerHTML = "18201491298"
+		            dom.innerHTML = "18201491298"
 		          }
 		        });
 			}
 			else {
-				//修改成功；
+				let url = `/hversion/childstar/${this.singer.id}`;
+				this._modifySinger(url, dom.innerHTML)
 
 			}
 		},
@@ -135,8 +145,31 @@ export default {
 	        this.dialogImageUrl = file.url;
 	        this.dialogVisible = true;
 	        console.log(this.dialogVisible)
-	    }
-	
+	    },
+	    _normalizeData(res) {
+	    	let id = res.id;
+	    	let name = res.name;
+	    	let avater = res.avater;
+	    	let sex = res.gender;
+	    	let age = new Date() - res.birthDate.year;
+	    	let tel = res.phone;
+	    	let city = res.city;
+	    	let avatar = res.avatar;
+	    	let state = res.state;
+	    	let stories = res.storyAudios
+	    	let images = res.sidelightImages
+	    	let slogan = res.slogan
+	    	return CreateSinger({id, name, sex, age, tel, slogan, city, avater, state, images, stories})
+	    },
+		_modifySinger(url,phone) {
+			modifySinger(url, {
+				phone
+			}).then(res => {
+				console.log(res)
+			}).catch(err => {
+				console.log(err)
+			})
+		}
 	},
 	watch : {
 		currentSong(newSong, oldSong) {

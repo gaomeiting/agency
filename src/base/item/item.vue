@@ -3,35 +3,36 @@
 		<ul>
 			<li>
 				<div class="img">
-					<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1526011215105&di=809782c6c7241ad7f665fbaf4613b513&imgtype=0&src=http%3A%2F%2Fh.hiphotos.baidu.com%2Fimage%2Fpic%2Fitem%2Fa5c27d1ed21b0ef48c509cecd1c451da80cb3ec3.jpg">
+					<img src="singer.avater">
 				</div>
 				<div class="content">
 					<div class="name">
 						<div class="left">
 						<div class="name-item">
-							<i class="iconfont icon-xingmingyonghumingnicheng"></i><span>李文山</span>
+							<i class="iconfont icon-xingmingyonghumingnicheng"></i><span>{{singer.name}}</span>
 						</div>
 						<div class="name-item">
-							<i class="iconfont icon-nianling"></i><span>10岁</span>
+							<i class="iconfont icon-nianling"></i><span>{{singer.age}}岁</span>
 						</div>
 						<div class="name-item">
-							<i class="iconfont icon-nv"></i>
+							<i v-if="singer.sex === '女'" class="iconfont icon-nv"></i>
+							<i v-if="singer.sex === '男'" class="iconfont icon-nan"></i>
 						</div>
 						<div class="name-item">
 							<i class="iconfont icon-dianhua"></i>
-							<span contenteditable="true" @blur="editTel" @mouseover="editShow" @mouseout="editHide">18201491298</span>
+							<span ref="tel" contenteditable="true" @blur="editTel" @mouseover="editShow" @mouseout="editHide">{{singer.tel}}</span>
 							<transition name="fade" transition-mode="out-in">
 							<i v-if="editFlag" class="iconfont icon-bianji" style="color: #0366d6"></i>
 							</transition>
 						</div>
-						<div class="name-item">
-							<i class="iconfont icon-shuliang"></i><span>45</span>
+						<div class="name-item" v-if="singer.state">
+							<i class="iconfont icon-shuliang"></i><span>{{singer.state.storyCount}}</span>
 						</div>
-						<div class="name-item" v-if="type == 'singer'">
-							<i class="iconfont icon-guanzhu"></i><span>114</span>
+						<div class="name-item" v-if="singer.state">
+							<i class="iconfont icon-guanzhu"></i><span>{{singer.state.fllowCount}}</span>
 						</div>
-						<div class="name-item" v-if="type == 'singer'">
-							<i class="iconfont icon-toupiao"></i><span>110</span>
+						<div class="name-item" v-if="singer.state">
+							<i class="iconfont icon-toupiao"></i><span>{{singer.state.voteCount}}</span>
 						</div>
 						<div class="name-item" v-if="type == 'teacher'">
 							<i class="iconfont icon-toupiao"></i><span>13020863721@163.com</span>
@@ -44,9 +45,9 @@
 							<el-button type="primary" round @click.stop="uploadStory">上传精彩故事</el-button>
 						</div>
 					</div>
-					<div class="info">
+					<div class="info" v-if="singer.slogan">
 						<div class="name-item">
-							<i class="iconfont icon-jianjie"></i><span>上传精彩瞬间上传精彩瞬间上传精彩瞬间上传精彩瞬间上传精彩瞬间上传精彩瞬间</span>
+							<i class="iconfont icon-jianjie"></i><span>{{singer.slogan}}</span>
 						</div>
 					</div>
 				</div>
@@ -61,6 +62,12 @@ export default {
 		type: {
 			type: String,
 			default: 'singer'
+		},
+		singer: {
+			type: Object,
+			default () {
+				return {}
+			}
 		}
 	},
 	data() {
@@ -75,8 +82,10 @@ export default {
 		editHide() {
 			this.editFlag = false;
 		},
-		editTel(e) {
-			this.$emit('editTel', e)
+		editTel() {
+			let dom = this.$refs.tel
+			console.log(dom.innerHTML)
+			this.$emit('editTel', dom)
 		},
 		uploadStory() {
 			this.$emit('uploadStory')

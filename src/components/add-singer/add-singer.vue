@@ -4,7 +4,6 @@
 		<div class="title">
 	 		<span>声咖信息填写</span>
 	 	</div>
-	 	<!-- <city></city> -->
 		<el-form label-width="100px" :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
 		  <el-form-item label="姓名" prop="name">
 		    <el-input v-model="ruleForm.name"></el-input>
@@ -21,17 +20,6 @@
 		  <el-form-item label="手机号码" required  prop="tel">
 		     <el-input v-model="ruleForm.tel"></el-input>
 		  </el-form-item>
-		  <!-- <el-form-item label="选择地区" required  prop="location">
-		  			    <el-select v-model="ruleForm.location" filterable placeholder="请选择">
-		  			    <el-option
-		  			      v-for="item in options"
-		  			      :key="item.value"
-		  			      :label="item.label"
-		  			      :value="item.value">
-		  			    </el-option>
-		  		</el-select>
-		  			
-		  </el-form-item> -->
 		  <el-form-item  label="所在地区" required  prop="location">
 				<el-cascader
 					:options="CityInfo"
@@ -129,7 +117,10 @@ created() {
 
 },
 methods: {
+	
 	handleAvatarSuccess(res, file) {
+		console.log(res, file)
+		this.ruleForm.avatarId = file.response;
 	    this.imageUrl = URL.createObjectURL(file.raw);
 	},
 	beforeAvatarUpload(file) {
@@ -171,7 +162,7 @@ methods: {
 		    	birthDate: this.ruleForm.date,
 		    	slogan: this.ruleForm.desc,
 		    	phone: this.ruleForm.tel,
-		    	avatorId:  this.image_base64
+		    	avatarId:  this.ruleForm.avatarId
 		    }).then(res => {
 		    	let _this = this;
 		    	this.$alert('创建成功', '', {

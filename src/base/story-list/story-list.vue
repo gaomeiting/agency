@@ -1,7 +1,7 @@
 <template>
 <transition name="fade" transition-mode="out-in">
 	<ul class="story-list">
-			<li v-for="(item, index) in 9">
+			<li v-for="(item, index) in list">
 				<div class="content">
 					<div class="img">
 						<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1526039589684&di=70433d45ac08f70afacaa98b0bb7bf6d&imgtype=0&src=http%3A%2F%2Fb.hiphotos.baidu.com%2Fimage%2Fpic%2Fitem%2Ff9198618367adab4c32b570487d4b31c8601e4fa.jpg">
@@ -45,6 +45,12 @@ export default {
 		type: {
 			type: String,
 			default: 'singer'
+		},
+		list: {
+			type: Array,
+			default() {
+				return []
+			}
 		}
 	},
 	methods: {

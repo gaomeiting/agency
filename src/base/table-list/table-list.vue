@@ -1,35 +1,37 @@
 <template>
  	<div class="table-list" ref="tableList" @click.stop="hideSelect">
 		<ul>
-			<li v-for="(item, index) in 8">
+			<li v-for="(item, index) in list">
 				<div class="img" @click.stop="linkDetail">
-					<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1526011215105&di=809782c6c7241ad7f665fbaf4613b513&imgtype=0&src=http%3A%2F%2Fh.hiphotos.baidu.com%2Fimage%2Fpic%2Fitem%2Fa5c27d1ed21b0ef48c509cecd1c451da80cb3ec3.jpg">
+					<img :src="item.avatarUrl">
 				</div>
-				<div class="content" @click.stop="linkDetail">
+				<div class="content" @click.stop="linkDetail(item.id)">
 					<div class="name">
 						<div class="name-item half">
-							<i class="iconfont icon-xingmingyonghumingnicheng"></i><span>李文山</span>
+							<i class="iconfont icon-xingmingyonghumingnicheng"></i><span>{{item.name}}</span>
 						</div>
 						<div class="name-item half">
-							<i class="iconfont icon-nianling"></i><span>10岁</span>
+							<i class="iconfont icon-nianling">&nbsp;</i>
+							<span>{{getAge(item.birthDate.year)}} 岁</span>
 						</div>
 						<div class="name-item half">
-							<i class="iconfont icon-nv"></i>
+							<i v-if="item.gender=='女'" class="iconfont icon-nv"></i>
+							<i v-if="item.gender=='男'" class="iconfont icon-nan"></i>
 						</div>
 						<div class="name-item">
-							<i class="iconfont icon-dianhua"></i><span>13833207274</span>
+							<i class="iconfont icon-dianhua"></i><span>{{item.phone}}</span>
 						</div>
 						<div class="name-item" v-if="type == 'intention'">
-							<i class="iconfont icon-dianhua"></i><span>北京市朝阳区</span>
+							<i class="iconfont icon-dianhua"></i><span>{{item.item.city}}</span>
 						</div>
-						<div class="name-item half" v-if=" type != 'intention'">
-							<i class="iconfont icon-shuliang"></i><span>45</span>
+						<div class="name-item half" v-if="item.stat &&item.stat.storyCount">
+							<i class="iconfont icon-shuliang"></i><span>{{item.stat.storyCount}}</span>
 						</div>
-						<div class="name-item half" v-if="type != 'intention'">
-							<i class="iconfont icon-guanzhu"></i><span>114</span>
+						<div class="name-item half" v-if="item.stat &&item.stat.followCount">
+							<i class="iconfont icon-guanzhu"></i><span>{{item.stat.followCount}}</span>
 						</div>
-						<div class="name-item half" v-if="type != 'intention'">
-							<i class="iconfont icon-toupiao"></i><span>110</span>
+						<div class="name-item half" v-if="item.stat &&item.stat.voteCount">
+							<i class="iconfont icon-toupiao"></i><span>{{item.stat.voteCount}}</span>
 						</div>
 						<div class="name-item half" v-if="type == 'intention'">
 							<i class="iconfont" :class="playCls[index]" @click.stop="switchState(index, playCls[index])"></i>
@@ -43,29 +45,38 @@
 					</div>
 					<div class="info" v-if=" type !== 'intention'">
 						<div class="name-item">
-							<i class="iconfont icon-jianjie"></i><span>上传精彩瞬间上传精彩瞬间上传精彩瞬间上传精彩瞬间上传精彩瞬间上传精彩瞬间</span>
+							<i class="iconfont icon-jianjie"></i><span>{{item.slogan}}</span>
 						</div>
 					</div>
 				</div>
-				<!-- <div class="btn" v-if="type == 'singer'"><el-button type="primary" round>上传精彩瞬间</el-button></div> -->
 				<div class="icon" @click.stop="switchTip(index)" v-if=" type !== 'intention'">
 					<i class="iconfont icon-bianji"></i><span>编辑</span>
 					<div class="tip-select-wrap">
-						<tip-select @edit="edit" @deleteOne="deleteOne" ref="tipSelect"></tip-select>
+						<tip-select @edit="edit" @deleteOne="deleteOne(item.id, index)" ref="tipSelect"></tip-select>
 					</div>
 				</div>
 			</li>
 
 		</ul>
+		<div class="no-result-wrap">
+			<no-result v-if="!list.length" title="没有结果"></no-result>
+		</div>
  	</div>
 </template>
 <script>
+import NoResult from 'base/no-result/no-result';
 import TipSelect from 'base/tip-select/tip-select'
 export default {
 	props: {
 		type: {
 			type: String,
 			default: 'singer'
+		},
+		list: {
+			type: Array,
+			default() {
+				return []
+			}
 		},
 		options: {
 			type: Array,
@@ -97,6 +108,10 @@ export default {
 		}
 	},
 	methods: {
+		getAge(year) {
+			console.log(new Date().getFullYear() - year)
+			return new Date().getFullYear() - year
+		},
 		switchState(index, cls) {
 			this.$emit('switchState', index, cls)
 		},
@@ -117,23 +132,28 @@ export default {
 			this.$refs.tipSelect[this.currentIndex].hide()
 			this.$emit('linkDetail')
 		},
-		deleteOne() {
+		deleteOne(id, index) {
 			this.$refs.tipSelect[this.currentIndex].hide()
-			this.$emit('deletOne')
+			this.$emit('deleteOne', id, index)
 		},
-		linkDetail() {
-			this.$emit('linkDetail')
+		linkDetail(id) {
+			this.$emit('linkDetail', id)
 		}
 	},
 	components: {
-		TipSelect
+		TipSelect,
+		NoResult
 	}
 }
 </script>
 
 <style scoped lang="scss">
 @import "~common/scss/variable";
+.no-result-wrap {
+	padding-top: 200px;
+}
 .table-list {
+	min-height: 600px;
 	li {
 		display: flex;
 		align-items: center;

@@ -55,71 +55,71 @@ export default {
 		loading: false,
       	options: {
       		teacherInit :[{
-	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa5',
+	          value: '选项1',
 	          label: '黄金糕'
 	        }, {
-	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa6',
+	          value: '选项2',
 	          label: '双皮奶'
 	        }, {
-	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa8',
+	          value: '选项3',
 	          label: '蚵仔煎'
 	        }, {
-	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa8',
+	          value: '选项4',
 	          label: '龙须面'
 	        }, {
-	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa8',
+	          value: '选项5',
 	          label: '北京烤鸭'
 	        }, {
 	        }], 
       		teacher: [{
-	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa8',
+	          value: '选项1',
 	          label: '黄金糕'
 	        }, {
-	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa8',
+	          value: '选项2',
 	          label: '双皮奶'
 	        }, {
-	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa8',
+	          value: '选项3',
 	          label: '蚵仔煎'
 	        }, {
-	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa8',
+	          value: '选项4',
 	          label: '龙须面'
 	        }, {
-	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa8',
+	          value: '选项5',
 	          label: '北京烤鸭'
 	        },  {
 	        }],
         	story: [{
-	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa8',
+	          value: '选项1',
 	          label: '黄金糕'
 	        }, {
-	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa8',
+	          value: '选项2',
 	          label: '双皮奶'
 	        }, {
-	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa8',
+	          value: '选项3',
 	          label: '蚵仔煎'
 	        }, {
-	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa8',
+	          value: '选项4',
 	          label: '龙须面'
 	        }, {
-	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa8',
+	          value: '选项5',
 	          label: '双皮奶'
 	        }, {
-	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa8',
+	          value: '选项6',
 	          label: '蚵仔煎'
 	        }, {
-	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa8',
+	          value: '选项7',
 	          label: '龙须面'
 	        }, {
-	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa8',
+	          value: '选项8',
 	          label: '双皮奶'
 	        }, {
-	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa8',
+	          value: '选项9',
 	          label: '蚵仔煎'
 	        }, {
-	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa8',
+	          value: '选项10',
 	          label: '龙须面'
 	        }, {
-	          value: '7c1beaa8-5667-4e7c-a4b9-575724283fa8',
+	          value: '选项11',
 	          label: '北京烤鸭'
 	        }]
       	} ,
@@ -145,7 +145,7 @@ methods: {
     },
 	handleAvatarSuccess(res, file) {
 	    this.imageUrl = URL.createObjectURL(file.raw);
-	    this.ruleForm.uid = file.uid;
+	    this.ruleForm.uid = file.response;
 	},
 	beforeAvatarUpload(file) {
 		console.log(file)

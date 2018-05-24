@@ -9,53 +9,91 @@
 	 		<span class="button" @click="goAdd">添加声咖</span>
 	 	</div>
 	 	<div class="table-wrap">
-	 		<table-list @deleteOne="deleteOne" @linkDetail="linkDetail"></table-list>
+	 		<table-list @deleteOne="deleteOne" @linkDetail="linkDetail" :list="list"></table-list>
 	 	</div>
 	 	<div class="pagination-wrap">
 	 		<el-pagination
 	 			      @size-change="handleSizeChange"
 	 			      @current-change="handleCurrentChange"
-	 			      :current-page.sync="currentPage3"
-	 			      :page-size="100"
+	 			      :current-page.sync="currentPage"
+	 			      :page-size="currentSize"
 	 			      layout="prev, pager, next, jumper"
-	 			      :total="1000">
+	 			      :total="total">
 	 			    </el-pagination>
 	 	</div>
 	</div>
 </transition>
 </template>
 <script>
-import {getSingers} from 'api/singers';
+import {getSingers, deleteSinger} from 'api/singers';
 import SearchBox from 'base/search-box/search-box';
 import Loading from 'base/loading/loading';
 import TableList from 'base/table-list/table-list';
 export default {
 	data() {
 		return {
-			loading: false,
-			currentPage3: 1
+			loading: true,
+			currentPage: 1,
+			list: [],
+			size: 0,
+			total: 0,
+			currentSize: 2,
 		}
 	},
 	created() {
-		getSingers('/hversion/childstar').then(res => {
-			console.log(res)
-		}).catch(err => {
-			console.log(err)
-		})
+		this._getSingers({
+				page: 0,
+				size: this.currentSize
+			});
 	},
 	methods: {
-		queryChange(query) {},
-		handleSizeChange() {
-
+		_getSingers(params) {
+			this.loading = true;
+			getSingers('/hversion/childstar', params).then(res => {
+				this.loading = false;
+				this.list = res.list;
+				this.size = res.length;
+				this.total = res.total;
+			}).catch(err => {
+				console.log(err)
+			})
 		},
-		handleCurrentChange() {
-
+		queryChange(query) {
+			this._getSingers({
+				page: 0,
+				size: this.currentSize,
+				key: query
+			});
 		},
-		deleteOne() {
-			console.log("deleteOne");
+		handleSizeChange(page) {
+			this._getSingers({
+				page: page-1,
+				size: this.currentSize
+			});
 		},
-		linkDetail() {
-			this.$router.push("/singer/187")
+		handleCurrentChange(page) {
+			this._getSingers({
+				page: page-1,
+				size: this.currentSize
+			});
+		},
+		deleteOne(id, index) {
+			let _this = this;
+			let url = `/hversion/childstar/${id}`
+			deleteSinger(url).then(res => {
+				this.$alert('删除成功', '', {
+					confirmButtonText: '确定',
+					callback: () => {
+						_this.list.splice(index, 1)
+						_this.total = _this.total - 1;
+					}
+				})
+			}).catch(err => {
+				console.log(err)
+			})
+		},
+		linkDetail(id) {
+			this.$router.push(`/singer/${id}`)
 		},
 		goAdd() {
 			this.$router.push("/addSinger")
