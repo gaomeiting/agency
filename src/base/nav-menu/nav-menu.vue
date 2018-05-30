@@ -1,12 +1,8 @@
 <template>
  	<div class="nav">
 		<ul>
-			<li v-for="(item, index) in navList" :class="{'active' : currentIndex === index}" @click="selectItem(index)">{{item.name}}</li>
+			<router-link v-for="(item, index) in navList" :to="item.url" :key="item.name" tag="li">{{item.name}} </router-link>
 		</ul>
-
-		<!-- <div class="search">
-			
-		</div> -->
 
 		<div class="header">
 			<div class="img">
@@ -23,11 +19,11 @@ export default {
 			type: Array,
 			default() {
 				return [
-					{ name: "首页" },
-					{ name: "小声咖" },
-					{ name: "指导老师" },
-					{ name: "故事" },
-					{ name: "参与意向" }
+					{ name: "首页", url: '/home' },
+					{ name: "小声咖", url: '/singer' },
+					{ name: "指导老师", url: '/teacher'},
+					{ name: "故事", url: '/stories'},
+					{ name: "参与意向", url: '/intention' }
 				]
 			}
 		},
@@ -65,7 +61,7 @@ export default {
 		li {
 			line-height: 3;
 			padding: 0 20px;
-			&.active, &:hover {
+			&.router-link-active, &:hover {
 				color: #fff;
 				background: #0366d6;
 				border-bottom: 1px solid rgba(255,255,255,0.75);

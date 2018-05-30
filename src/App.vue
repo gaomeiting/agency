@@ -16,7 +16,7 @@ import NavMenu from 'base/nav-menu/nav-menu';
 export default {
 	data() {
 		return {
-			currentIndex: 0,
+			currentIndex: 0
 		}
 	},
 	methods: {
@@ -25,28 +25,6 @@ export default {
 		},
 		signOut() {
 			console.log("退出")
-		}
-	},
-	watch: {
-		currentIndex(newVal, oldVal) {
-			if(newVal === oldVal) return;
-			switch(newVal) {
-				case 0:
-					this.$router.push("/home")
-					break;
-				case 1:
-					this.$router.push("/singer")
-					break;
-				case 2:
-					this.$router.push("/teacher")
-					break;
-				case 3:
-					this.$router.push("/stories")
-					break;
-				case 4:
-					this.$router.push("/intention")
-					break;	
-			}
 		}
 	},
 	components: {

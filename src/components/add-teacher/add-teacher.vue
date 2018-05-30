@@ -46,6 +46,7 @@
 </transition>
 </template>
 <script>
+import {addSinger} from 'api/singers';
 export default {
 data() {
   return {
@@ -58,7 +59,8 @@ data() {
 	location: '',
       desc: '',
       qq: '',
-      email: ''
+      email: '',
+      avatarId: ''
     },
     rules: {
       name: [
@@ -66,10 +68,10 @@ data() {
         { message: '请输入正确姓名', trigger: 'blur' }
       ],
       sex: [
-        { required: true, message: '请选择性别', trigger: 'change' }
+        { required: true, message: '请选择性别', trigger: 'blur' }
       ],
       date: [
-        { required: true, message: '请选择日期', trigger: 'change' }
+        { required: true, message: '请选择日期', trigger: 'blur' }
       ],
       tel: [
         { required: true, message: '请输入手机号', trigger: 'blur' },
@@ -101,9 +103,13 @@ data() {
     }
   };
 },  
+created() {
+	console.log(500)
+},
 methods: {
 	handleAvatarSuccess(res, file) {
-		console.log(file.raw)
+		console.log(res, file)
+		this.ruleForm.avatarId = file.response;
 	    this.imageUrl = URL.createObjectURL(file.raw);
 	},
 	beforeAvatarUpload(file) {
@@ -119,7 +125,6 @@ methods: {
 		if(isLtBase64) {
 			this.toBase64(file);
 			this.autoUpload = false;
-			//console.log(this.autoUpload)
 		}
 		return isJPG && isLt2M;
 	},
@@ -137,8 +142,25 @@ methods: {
 		}*/
 		this.$refs[formName].validate((valid) => {
 		  if (valid) {
-		  	console.log(this.ruleForm)
-		    alert('submit!');
+		  	console.log(this.ru)
+		  	addSinger('/hversion/narrator', {
+		    	name: this.ruleForm.name,
+		    	gender: this.ruleForm.sex,
+		    	qqNum: this.ruleForm.qq,
+		    	email: this.ruleForm.email,
+		    	birthDate: this.ruleForm.date,
+		    	introduction: this.ruleForm.desc,
+		    	phone: this.ruleForm.tel,
+		    	avatarId:  this.ruleForm.avatarId
+		    }).then(res => {
+		    	let _this = this;
+		    	this.$alert('创建成功', '', {
+		          confirmButtonText: '确定',
+		          callback: action => {
+		            this.$router.push('/teacher')
+		          }
+		        });
+		    })
 		  } else {
 		    console.log('error submit!!');
 		    return false;

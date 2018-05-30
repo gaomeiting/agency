@@ -58,3 +58,7 @@
   }
 
 }
+//最小高度问题
+@mixin minH($h) {
+  min-height: $h
+}

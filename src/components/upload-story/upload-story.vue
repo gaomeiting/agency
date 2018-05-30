@@ -47,81 +47,16 @@
 </transition>
 </template>
 <script>
-import {addSinger} from 'api/singers';
+import { getSingers, addSinger } from 'api/singers';
 export default {
     data() {
       return {
 		fileList:[],
 		loading: false,
       	options: {
-      		teacherInit :[{
-	          value: '选项1',
-	          label: '黄金糕'
-	        }, {
-	          value: '选项2',
-	          label: '双皮奶'
-	        }, {
-	          value: '选项3',
-	          label: '蚵仔煎'
-	        }, {
-	          value: '选项4',
-	          label: '龙须面'
-	        }, {
-	          value: '选项5',
-	          label: '北京烤鸭'
-	        }, {
-	        }], 
-      		teacher: [{
-	          value: '选项1',
-	          label: '黄金糕'
-	        }, {
-	          value: '选项2',
-	          label: '双皮奶'
-	        }, {
-	          value: '选项3',
-	          label: '蚵仔煎'
-	        }, {
-	          value: '选项4',
-	          label: '龙须面'
-	        }, {
-	          value: '选项5',
-	          label: '北京烤鸭'
-	        },  {
-	        }],
-        	story: [{
-	          value: '选项1',
-	          label: '黄金糕'
-	        }, {
-	          value: '选项2',
-	          label: '双皮奶'
-	        }, {
-	          value: '选项3',
-	          label: '蚵仔煎'
-	        }, {
-	          value: '选项4',
-	          label: '龙须面'
-	        }, {
-	          value: '选项5',
-	          label: '双皮奶'
-	        }, {
-	          value: '选项6',
-	          label: '蚵仔煎'
-	        }, {
-	          value: '选项7',
-	          label: '龙须面'
-	        }, {
-	          value: '选项8',
-	          label: '双皮奶'
-	        }, {
-	          value: '选项9',
-	          label: '蚵仔煎'
-	        }, {
-	          value: '选项10',
-	          label: '龙须面'
-	        }, {
-	          value: '选项11',
-	          label: '北京烤鸭'
-	        }]
+      		teacherInit :[], 
+      		teacher: [],
+        	story: []
       	} ,
         ruleForm: {
         	uid: '',
@@ -138,7 +73,26 @@ export default {
         }
       };
     },
+created() {
+	//指导老师
 
+	//故事
+	let url = '/hversion/narrator';
+	const teacher = getSingers(url).then(res => {
+		return res
+	})
+	const stories = getSingers(`/hversion/story`).then(res => {
+		return res
+	})
+	Promise.all([teacher, stories]).then(res => {
+		this.loading = false;
+		this.options.story = this._normalizeData(res[1].list)
+		this.options.teacherInit = this._normalizeData(res[0].list)
+		this.options.teacher = this.options.teacherInit
+		console.log(res[1].list)
+		/*this.teacherInit = res[0];*/
+	})
+},
 methods: {
 	handleExceed(files, fileList) {
         this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
@@ -146,6 +100,7 @@ methods: {
 	handleAvatarSuccess(res, file) {
 	    this.imageUrl = URL.createObjectURL(file.raw);
 	    this.ruleForm.uid = file.response;
+	    console.log(this.ruleForm.uid, 'ruleForm')
 	},
 	beforeAvatarUpload(file) {
 		console.log(file)
@@ -181,16 +136,19 @@ methods: {
         }
     },
 	submitForm(formName) {
+		const id = this.$route.query.id;
 		if(!this.ruleForm.uid) {
 			window.alert("请先上传故事")
 			return;
 		}
 		this.$refs[formName].validate((valid) => {
 		  if (valid) {
-		    addSinger('/hversion/audio', {
+		  	console.log(this.ruleForm.uid,this.ruleForm.story, this.ruleForm.story )
+		    addSinger(`/hversion/audio`, {
 		    	audioId: this.ruleForm.uid,
 		    	storyId: this.ruleForm.story,
-		    	narratorId: this.ruleForm.teacher
+		    	narratorId: this.ruleForm.teacher,
+		    	childStarId: id
 		    }).then(res => {
 		    	let _this = this;
 		    	this.$alert('创建成功', '', {
@@ -199,6 +157,12 @@ methods: {
 		            this.$router.push('/singer')
 		          }
 		        });
+		    }).catch(err => {
+		    	let err_msg = err.detailMessage;
+		    	this.$alert(err_msg, '', {
+		    		"confirmButtonText" : "确定"
+		    	})
+		    	console.log(err.detailMessage, "err")
 		    })
 		  } else {
 		    console.log('error submit!!');
@@ -208,6 +172,16 @@ methods: {
 	},
 	resetForm(formName) {
 		this.$refs[formName].resetFields();
+	},
+	_normalizeData(list) {
+		let arr = [];
+		list.forEach(item => {
+			let obj = {}
+			obj.value = item.id
+			obj.label = item.name || item.title
+			arr.push(obj)
+		})
+		return arr;
 	}
 }
 }

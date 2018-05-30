@@ -6,80 +6,49 @@
 	 		<div class="search-wrap">
 	 			<search-box @queryChange="queryChange" ref="searchBox"></search-box>
 	 		</div>
-	 		<span class="button" @click="goAdd">添加声咖</span>
+	 		<span class="button" @click="goAdd('/addSinger')">添加声咖</span>
 	 	</div>
 	 	<div class="table-wrap">
-	 		<table-list @deleteOne="deleteOne" @linkDetail="linkDetail" :list="list"></table-list>
+	 		<table-list @deleteOne="deleteOne" @linkDetail="linkDetail" :loading="loading" :list="list"></table-list>
 	 	</div>
 	 	<div class="pagination-wrap">
 	 		<el-pagination
-	 			      @size-change="handleSizeChange"
-	 			      @current-change="handleCurrentChange"
-	 			      :current-page.sync="currentPage"
-	 			      :page-size="currentSize"
-	 			      layout="prev, pager, next, jumper"
-	 			      :total="total">
-	 			    </el-pagination>
+		      @size-change="handleSizeChange"
+		      @current-change="handleCurrentChange"
+		      :current-page.sync="currentPage"
+		      :page-size="currentSize"
+		      layout="prev, pager, next, jumper"
+		      :total="total">
+		    </el-pagination>
 	 	</div>
 	</div>
 </transition>
 </template>
 <script>
-import {getSingers, deleteSinger} from 'api/singers';
 import SearchBox from 'base/search-box/search-box';
-import Loading from 'base/loading/loading';
 import TableList from 'base/table-list/table-list';
+import  { getCommon } from"common/js/mixin";
+import {getSingers, deleteSinger} from 'api/singers';
 export default {
+	mixins: [getCommon],
 	data() {
 		return {
-			loading: true,
-			currentPage: 1,
-			list: [],
-			size: 0,
-			total: 0,
-			currentSize: 2,
+			currentSize: 6
 		}
 	},
-	created() {
-		this._getSingers({
-				page: 0,
-				size: this.currentSize
-			});
-	},
 	methods: {
-		_getSingers(params) {
-			this.loading = true;
-			getSingers('/hversion/childstar', params).then(res => {
-				this.loading = false;
-				this.list = res.list;
-				this.size = res.length;
-				this.total = res.total;
-			}).catch(err => {
-				console.log(err)
-			})
+		linkDetail(id) {
+			this.$router.push(`/singer/${id}`)
 		},
-		queryChange(query) {
-			this._getSingers({
-				page: 0,
-				size: this.currentSize,
-				key: query
-			});
-		},
-		handleSizeChange(page) {
-			this._getSingers({
-				page: page-1,
-				size: this.currentSize
-			});
-		},
-		handleCurrentChange(page) {
-			this._getSingers({
-				page: page-1,
-				size: this.currentSize
-			});
-		},
-		deleteOne(id, index) {
+		deleteOne(item, index) {
+			if(item.stat.storyCount) {
+				this.$alert(`录制故事数量${item.stat.storyCount},请先删除故事`, '', {
+					confirmButtonText: '确定'
+				})
+				return;
+			}
 			let _this = this;
-			let url = `/hversion/childstar/${id}`
+			let url = `/hversion/childstar/${item.id}`
 			deleteSinger(url).then(res => {
 				this.$alert('删除成功', '', {
 					confirmButtonText: '确定',
@@ -92,18 +61,20 @@ export default {
 				console.log(err)
 			})
 		},
-		linkDetail(id) {
-			this.$router.push(`/singer/${id}`)
-		},
-		goAdd() {
-			this.$router.push("/addSinger")
+		_getSingers( params) {
+			this.loading = true;
+			getSingers('/hversion/childstar',params).then(res => {
+				this.loading = false;
+				this.list = res.list;
+				this.total = res.total;
+			}).catch(err => {
+				console.log(err)
+			})
 		}
-	
 	},
 	components: {
 		TableList,
-		SearchBox,
-		Loading
+		SearchBox
 	}
 }
 </script>

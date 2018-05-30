@@ -58,19 +58,6 @@ export default {
 			})
 		},
 		
-		/*goSinger() {
-			const token = window.localStorage.getItem('token');
-			if(token) {
-				
-			}
-			else {
-				this.postLogin();
-			}
-			//提交登陆信息
-			//this.setLogin("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodmdhbWUiLCJzdWIiOiI0NTY0NTYxMjM1NiJ9.Alh9iNwa5EYq_ECPNSmT71FnSNOdcvOSoso4BzH3ls4")
-			
-			
-		},*/
 		...mapMutations({
 			setLogin: "SET_LOGIN",
 			setLogOut: "SET_LOGOUT"

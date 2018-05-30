@@ -6,19 +6,19 @@
 	 		<div class="search-wrap">
 	 			<search-box @queryChange="queryChange" placeholder="搜索老师" ref="searchBox"></search-box>
 	 		</div>
-	 		<span class="button" @click="goAdd">添加老师</span>
+	 		<span class="button" @click="goAdd('/addTeacher')">添加老师</span>
 	 	</div>
 	 	<div class="table-wrap">
-	 		<table-list @deleteOne="deleteOne" @linkDetail="linkDetail"></table-list>
+	 		<table-list :loading="loading" type="teacher" :list="list" @deleteOne="deleteOne" @linkDetail="linkDetail"></table-list>
 	 	</div>
 	 	<div class="pagination-wrap">
 	 		<el-pagination
 		      @size-change="handleSizeChange"
 		      @current-change="handleCurrentChange"
-		      :current-page.sync="currentPage3"
-		      :page-size="100"
+		      :current-page.sync="currentPage"
+		      :page-size="currentSize"
 		      layout="prev, pager, next, jumper"
-		      :total="1000">
+		      :total="total">
 		    </el-pagination>
 	 	</div>
 	</div>
@@ -27,30 +27,49 @@
 <script>
 import SearchBox from 'base/search-box/search-box';
 import TableList from 'base/table-list/table-list';
+import  { getCommon } from"common/js/mixin";
+import {getSingers, deleteSinger} from 'api/singers';
 export default {
+	mixins: [getCommon],
 	data() {
 		return {
-			loading: false,
-			currentPage3: 1
+			currentSize: 6
 		}
 	},
 	methods: {
-		queryChange(query) {
+		linkDetail(id) {
+			this.$router.push(`/teacher/${id}`)
 		},
-		handleSizeChange() {
-
+		deleteOne(item, index) {
+			let _this = this;
+			let url = `/hversion/narrator/${item.id}`
+			if(item.narratorStoryNum.storyNum) {
+				this.$alert('故事数量不为0,不能删除指导老师', '', {
+					confirmButtonText: '确定'
+				})
+				return;
+			}
+			deleteSinger(url).then(res => {
+				this.$alert('删除成功', '', {
+					confirmButtonText: '确定',
+					callback: () => {
+						_this.list.splice(index, 1)
+						_this.total = _this.total - 1;
+					}
+				})
+			}).catch(err => {
+				console.log(err)
+			})
 		},
-		handleCurrentChange() {
-
-		},
-		deleteOne() {
-			console.log("deleteOne");
-		},
-		linkDetail() {
-			this.$router.push('/teacher/187')
-		},
-		goAdd() {
-			this.$router.push("/addTeacher")
+		_getSingers( params) {
+			this.loading = true;
+			getSingers('/hversion/vendor/narrators',params).then(res => {
+				this.loading = false;
+				this.list = res.list;
+				this.total = res.total;
+			}).catch(err => {
+				console.log(err)
+			})
 		}
 	
 	},

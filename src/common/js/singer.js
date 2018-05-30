@@ -1,5 +1,5 @@
 export default class Singer {
-	constructor({id, name, sex, age, tel, slogan, city, avater, state, images, stories}) {
+	constructor({id, name, sex, age, tel, slogan, city, avatar, state, images, stories}) {
 		this.id = id;
 		this.name = name;
 		this.sex = sex;
@@ -7,12 +7,12 @@ export default class Singer {
 		this.tel = tel;
 		this.slogan = slogan;
 		this.city = city;
-		this.avater = avater;
+		this.avatar = avatar;
 		this.state = state;
 		this.images = images;
 		this.stories = stories;
 	}
 }
-export function CreateSinger({id, name, sex, age, tel, slogan, city, avater, state, images, stories}) {
-	return new Singer({id, name, sex, age, tel, slogan, city, avater, state, images, stories})
+export function CreateSinger({id, name, sex, age, tel, slogan, city, avatar, state, images, stories}) {
+	return new Singer({id, name, sex, age, tel, slogan, city, avatar, state, images, stories})
 }

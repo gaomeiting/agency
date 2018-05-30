@@ -7,23 +7,22 @@
 	 		<!-- <span class="button">修改</span> -->
 	 	</div>
 	 	<div class="table-wrap">
-	 		<table-item @editTel="editTel" type="teacher"></table-item>
+	 		<table-item  :singer="teacher" @editTel="editTel" type="teacher"></table-item>
 	 	</div>
 	 	<div class="title">
 	 		<span>故事列表</span>
-	 		<!-- <span class="button">删除全部</span> -->
 	 	</div>
 	 	<div class="table-wrap">
-	 		<story-list type="teacher" :playCls="playCls" @deleteStory="deleteStory" @switchState="switchState"></story-list>
+	 		<story-list :loading="loading" :list="stories" type="teacher" :playCls="playCls" @deleteStory="deleteStory" @switchState="switchState"></story-list>
 	 	</div>
 	 	<div class="pagination-wrap">
 	 		<el-pagination
 		      @size-change="handleSizeChange"
 		      @current-change="handleCurrentChange"
-		      :current-page.sync="currentPage3"
-		      :page-size="100"
+		      :current-page.sync="currentPage"
+		      :page-size="currentSize"
 		      layout="prev, pager, next, jumper"
-		      :total="1000">
+		      :total="total">
 		    </el-pagination>
 	 	</div>
 	 	
@@ -34,22 +33,48 @@
 <script>
 import TableItem from 'base/item/item';
 import StoryList from 'base/story-list/story-list';
+import { getSingers, modifySinger, deleteSinger } from 'api/singers';
+import { CreateTeacher } from 'common/js/teacher';
+import { CreateStory } from 'common/js/story';
 const SONGLISTLEN = 20
 export default {
 	data() {
 		return {
-			loading: false,
+			loading: true,
+			teacher: {},
+			currentSize: 1,
+			total: 0,
+			stories: [],
 			currentSong: {
 				url: 'http://dl.stream.qqmusic.qq.com/C400003LxmX246aRC7.m4a?vkey=53DD0EE597E35BBF57F5155A3DA3CB3B950EF9A45985DEC41E8D7F7BF7CCB1171452A827AA1BE6D2F2FCD4945FEE1838EED5A62276F1C16B&guid=8182525974&uin=0&fromtag=66'
 			},
 			playCls: [],
-			currentPage3: 1,
+			currentPage: 1,
 			dialogImageUrl: '',
-        	dialogVisible: false,
-        	fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}]
+        	dialogVisible: false
 		}
 	},
 	created() {
+		let id = this.$route.params.id;
+		let url = `/hversion/narrator/${id}`;
+		if(!id) {
+			this.$router.push('/teacher')
+		}
+		const detail = getSingers(url).then(res => {
+			return res
+		})
+		const stories = getSingers(`/hversion/narrator/${id}/stories`, {
+			page: 0,
+			size: this.currentSize
+		}).then(res => {
+			return res
+		})
+		Promise.all([detail, stories]).then(res => {
+			this.loading = false;
+			this.teacher = this._normalizeData(...res);
+			this.stories = this._normalizeStory(res[1].list);
+			this.total = res[1].total;
+		})
 		//设置播放状态；
 		for(let i = 0; i < SONGLISTLEN; i++) {
 			this.playCls.push('icon-bofang')
@@ -61,22 +86,20 @@ export default {
 		},
 		error() {
 		},
-		editTel(e) {
+		editTel(dom) {
 			//校验手机号
-			const ev = e.currentTarget
-			console.log(ev)
-			//console.log(ev)
-			if(/^1[34578]\d{9}$/.test(ev.value) == false) {
+			if(/^1[34578]\d{9}$/.test(dom.innerHTML) == false) {
 				//this.e.currentTarget.innerHTML=""
 				this.$alert('请输入正确的手机号', '', {
 		          confirmButtonText: '确定',
 		          callback: action => {
-		            ev.innerHTML = "18201491298"
+		            dom.innerHTML = this.singer.tel
 		          }
 		        });
 			}
 			else {
-				//修改成功；
+				let url = `/hversion/narrator/${this.teacher.id}`;
+				this._modifySinger(url, dom.innerHTML)
 
 			}
 		},
@@ -94,22 +117,82 @@ export default {
 			this.playCls = arr;
 		},
 		deleteStory(item, index) {
-			console.log(item, index)
+			let _this = this;
+			const url = `/hversion/audio/${item.id}`;
+			deleteSinger(url).then(res => {
+				this.$alert('删除成功', '', {
+					confirmButtonText: '确定',
+					callback: () => {
+						_this.singer.stories.splice(index, 1)
+						_this.total = _this.total - 1;
+					}
+				})
+			}).catch( err => {
+				console.log(err);
+			})
 		},
-		handleSizeChange() {
+		handleSizeChange(page) {
+			this._getStories(page-1)
 
 		},
-		handleCurrentChange() {
-
+		handleCurrentChange(page) {
+			this._getStories(page-1)
 		},
-		handleRemove(file, fileList) {
-	        console.log(file, fileList);
-	    },
 	    handlePictureCardPreview(file) {
 	        this.dialogImageUrl = file.url;
 	        this.dialogVisible = true;
 	        console.log(this.dialogVisible)
-	    }
+	    },
+	    _getStories(page) {
+	    	let id = this.$route.params.id;
+	    	getSingers(`/hversion/narrator/${id}/stories`, {
+				page: page,
+				size: this.currentSize
+			}).then(res => {
+				this.stories = this._normalizeStory(res.list)
+			})
+	    },
+	    _normalizeData() {
+	    	//{id, name, sex, age, tel, slogan, avater, email, qq, stories}
+	    	let id = arguments[0].id;
+	    	let name = arguments[0].name;
+	    	let avatar = this. _fragment(arguments[0].avatarId,'jpg');
+	    	let sex = arguments[0].gender;
+	    	let age = arguments[0].age;
+	    	let tel = arguments[0].phone;
+	    	let qq = arguments[0].qq;
+	    	let email = arguments[0].email;
+	    	let slogan = arguments[0].introduction
+	    	return CreateTeacher({id, name, sex, age, tel, slogan, avatar, email, qq})
+	    },
+	    _normalizeStory(list) {
+	    	let arr = [];
+	    	list.forEach(item => {
+	    		console.log(item, "123")
+	    		let id = item.id;
+	    		let title = item.title;
+	    		let content = item.content;
+	    		let category = item.category;
+	    		let data = item.createOn;
+	    		let teacher = item.narrator.name;
+	    		let cover = this._fragment(item.coverId, "jpg");
+	    		let audio = this._fragment(item.audioId, "mp3");
+	    		arr.push(CreateStory({id, title, content, cover, category, teacher, audio, data}))
+	    	})
+	    	return arr;
+	    },
+	    _fragment(id, type) {
+	    	return `/hversion/${id}.${type}`
+	    },
+	    _modifySinger(url,phone) {
+			modifySinger(url, {
+				"property": "phone", "value": phone
+			}).then(res => {
+				console.log(res)
+			}).catch(err => {
+				console.log(err)
+			})
+		}
 	
 	},
 	watch : {

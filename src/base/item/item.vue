@@ -3,18 +3,18 @@
 		<ul>
 			<li>
 				<div class="img">
-					<img src="singer.avater">
+					<img :src="singer.avatar">
 				</div>
 				<div class="content">
 					<div class="name">
 						<div class="left">
-						<div class="name-item">
+						<div class="name-item" v-if="singer.name">
 							<i class="iconfont icon-xingmingyonghumingnicheng"></i><span>{{singer.name}}</span>
 						</div>
-						<div class="name-item">
+						<div class="name-item" v-if="singer.age">
 							<i class="iconfont icon-nianling"></i><span>{{singer.age}}岁</span>
 						</div>
-						<div class="name-item">
+						<div class="name-item" v-if="singer.sex">
 							<i v-if="singer.sex === '女'" class="iconfont icon-nv"></i>
 							<i v-if="singer.sex === '男'" class="iconfont icon-nan"></i>
 						</div>
@@ -34,11 +34,11 @@
 						<div class="name-item" v-if="singer.state">
 							<i class="iconfont icon-toupiao"></i><span>{{singer.state.voteCount}}</span>
 						</div>
-						<div class="name-item" v-if="type == 'teacher'">
-							<i class="iconfont icon-toupiao"></i><span>13020863721@163.com</span>
+						<div class="name-item" v-if="singer.qq">
+							<i class="iconfont icon-toupiao"></i><span>{{singer.qq}}</span>
 						</div>
-						<div class="name-item" v-if="type == 'teacher'">
-							<i class="iconfont icon-toupiao"></i><span>1959151878</span>
+						<div class="name-item" v-if="singer.email">
+							<i class="iconfont icon-toupiao"></i><span>{{singer.email}}</span>
 						</div>
 						</div>
 						<div class="right" v-if="type == 'singer'">

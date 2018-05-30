@@ -3,7 +3,7 @@
 		<ul>
 			<li v-for="(item, index) in list">
 				<div class="img" @click.stop="linkDetail">
-					<img :src="item.avatarUrl">
+					<img v-if="item.avatarId" :src="'/hversion/'+item.avatarId+'.jpg'">
 				</div>
 				<div class="content" @click.stop="linkDetail(item.id)">
 					<div class="name">
@@ -12,17 +12,18 @@
 						</div>
 						<div class="name-item half">
 							<i class="iconfont icon-nianling">&nbsp;</i>
-							<span>{{getAge(item.birthDate.year)}} 岁</span>
+							<span v-if="item.birthDate">{{getAge(item.birthDate)}} 岁</span>
 						</div>
 						<div class="name-item half">
 							<i v-if="item.gender=='女'" class="iconfont icon-nv"></i>
 							<i v-if="item.gender=='男'" class="iconfont icon-nan"></i>
 						</div>
 						<div class="name-item">
-							<i class="iconfont icon-dianhua"></i><span>{{item.phone}}</span>
+							<i class="iconfont icon-dianhua" v-if="item.phone"></i><span>{{item.phone}}</span>
+							<i class="iconfont icon-dianhua" v-if="item.phoneNum"></i><span>{{item.phoneNum}}</span>
 						</div>
-						<div class="name-item" v-if="type == 'intention'">
-							<i class="iconfont icon-dianhua"></i><span>{{item.item.city}}</span>
+						<div class="name-item" v-if="item.city">
+							<i class="iconfont icon-dizhi"></i><span>{{item.city}}</span>
 						</div>
 						<div class="name-item half" v-if="item.stat &&item.stat.storyCount">
 							<i class="iconfont icon-shuliang"></i><span>{{item.stat.storyCount}}</span>
@@ -33,7 +34,13 @@
 						<div class="name-item half" v-if="item.stat &&item.stat.voteCount">
 							<i class="iconfont icon-toupiao"></i><span>{{item.stat.voteCount}}</span>
 						</div>
-						<div class="name-item half" v-if="type == 'intention'">
+						<div class="name-item half" v-if="item.qq">
+							<i class="iconfont icon-qq"></i><span>{{item.qq}}</span>
+						</div>
+						<div class="name-item" v-if="item.email">
+							<i class="iconfont icon-youxiang"></i><span>{{item.email}}</span>
+						</div>
+						<div class="name-item" v-if="type == 'intention'">
 							<i class="iconfont" :class="playCls[index]" @click.stop="switchState(index, playCls[index])"></i>
 						</div>
 						<div class="name-item" v-if="type == 'intention'">
@@ -45,21 +52,23 @@
 					</div>
 					<div class="info" v-if=" type !== 'intention'">
 						<div class="name-item">
-							<i class="iconfont icon-jianjie"></i><span>{{item.slogan}}</span>
+							<i class="iconfont icon-jianjie"></i>
+							<span v-if="item.slogan">{{item.slogan}}</span>
+							<span v-if="item.introduction">{{item.introduction}}</span>
 						</div>
 					</div>
 				</div>
 				<div class="icon" @click.stop="switchTip(index)" v-if=" type !== 'intention'">
 					<i class="iconfont icon-bianji"></i><span>编辑</span>
 					<div class="tip-select-wrap">
-						<tip-select @edit="edit" @deleteOne="deleteOne(item.id, index)" ref="tipSelect"></tip-select>
+						<tip-select @edit="edit(item.id)" @deleteOne="deleteOne(item, index)" ref="tipSelect"></tip-select>
 					</div>
 				</div>
 			</li>
 
 		</ul>
-		<div class="no-result-wrap">
-			<no-result v-if="!list.length" title="没有结果"></no-result>
+		<div class="no-result-wrap" v-if="!list.length && !loading">
+			<no-result title="没有结果"></no-result>
 		</div>
  	</div>
 </template>
@@ -77,6 +86,10 @@ export default {
 			default() {
 				return []
 			}
+		},
+		loading: {
+			type: Boolean,
+			default: true
 		},
 		options: {
 			type: Array,
@@ -109,8 +122,8 @@ export default {
 	},
 	methods: {
 		getAge(year) {
-			console.log(new Date().getFullYear() - year)
-			return new Date().getFullYear() - year
+			if(!year) return;
+			return new Date().getFullYear() - year.split('-')[0]
 		},
 		switchState(index, cls) {
 			this.$emit('switchState', index, cls)
@@ -127,14 +140,14 @@ export default {
 			this.$refs.tipSelect[this.currentIndex].show()
 			
 		},
-		edit() {
+		edit(id) {
 
 			this.$refs.tipSelect[this.currentIndex].hide()
-			this.$emit('linkDetail')
+			this.$emit('linkDetail', id)
 		},
-		deleteOne(id, index) {
+		deleteOne(item, index) {
 			this.$refs.tipSelect[this.currentIndex].hide()
-			this.$emit('deleteOne', id, index)
+			this.$emit('deleteOne', item, index)
 		},
 		linkDetail(id) {
 			this.$emit('linkDetail', id)
@@ -149,11 +162,12 @@ export default {
 
 <style scoped lang="scss">
 @import "~common/scss/variable";
+@import "~common/scss/mixin";
 .no-result-wrap {
 	padding-top: 200px;
 }
 .table-list {
-	min-height: 600px;
+	@include minH(600px);
 	li {
 		display: flex;
 		align-items: center;

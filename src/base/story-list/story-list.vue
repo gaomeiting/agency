@@ -1,39 +1,45 @@
 <template>
 <transition name="fade" transition-mode="out-in">
-	<ul class="story-list">
+	<div class="story-list">
+	<ul>
 			<li v-for="(item, index) in list">
 				<div class="content">
 					<div class="img">
-						<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1526039589684&di=70433d45ac08f70afacaa98b0bb7bf6d&imgtype=0&src=http%3A%2F%2Fb.hiphotos.baidu.com%2Fimage%2Fpic%2Fitem%2Ff9198618367adab4c32b570487d4b31c8601e4fa.jpg">
+						<img v-if="type == 'story'" :src="'/hversion/'+item.coverId+'.jpg'">
+						<img v-else :src="item.cover">
 					</div>
 					<div class="text">
-						<p class="title">红太狼和灰太狼</p>
+						<p class="title">{{item.title}}</p>
 						<p class="ellipsis">
-							文学体裁的一种，侧重于事件发展过程的描述。强调情节的生动性和连贯性较适于口头讲述。已经发生事。或者想象故事故事一般都和原始人类的生产生活有密切关系他们迫切地希望认识自然于是便以自身为依据，想象天地万物都和人
+							{{item.content}}
 						</p>
-						<p v-if="type == 'singer'" >2018-5-14</p>
-						<p v-if="type == 'singer'">老师：宋红</p>
-						<p v-if="type == 'teacher'">声咖：宋红</p>
+						<br>
+						<p v-if="item.data" >{{item.data}}</p>
+						<p v-if="item.teacher">老师:{{item.teacher}}</p>
+						<p v-if="item.author">声咖：宋红</p>
 					</div>
 				</div>
 				<div class="tags">
-					<p class="tag">
-						<span>品格培养</span>
-						<span>品格培养</span>
+					<p v-if="item.category" class="tag">
+						<span>{{item.category}}</span>
 					</p>
 					<p class="icon">
 						<i class="iconfont" :class="playCls[index]" @click.stop="switchState(index, playCls[index])"></i>
-						<i class="iconfont icon-weibiaoti6" @click.stop="deleteStory(item, index)"></i>
+						<i v-if="type !== 'story'" class="iconfont icon-weibiaoti6" @click.stop="deleteStory(item, index)"></i>
 						<i class="iconfont icon-shoucang"></i>
 					</p>
 				</div>
 				
 			</li>
 	</ul>
+	<div class="no-result-wrap" v-if="!list.length && !loading">
+		<no-result title="什么也没有~~"></no-result>
+	</div>
+	</div>
 </transition>
 </template>
 <script>
-
+import NoResult from 'base/no-result/no-result';
 export default {
 	props: {
 		playCls: {
@@ -51,6 +57,10 @@ export default {
 			default() {
 				return []
 			}
+		},
+		loading: {
+			type: Boolean,
+			default: true
 		}
 	},
 	methods: {
@@ -60,6 +70,9 @@ export default {
 		switchState(index, cls) {
 			this.$emit('switchState', index, cls)
 		}
+	},
+	components: {
+		NoResult
 	}
 }
 </script>
@@ -67,14 +80,18 @@ export default {
 <style scoped lang="scss">
 @import "~common/scss/variable";
 @import "~common/scss/mixin";
+.no-result-wrap {
+	padding-top: 200px;
+}
 .ellipsis {
 	@include ellipsis(3);
 }
 .story-list {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
 	padding-top: 20px;
+	> ul {
+		display: flex;
+		flex-wrap: wrap;
+	}
 	li {
 		flex: 0 0 383px; 
 		width: 383px;

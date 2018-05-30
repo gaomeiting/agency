@@ -87,10 +87,10 @@ export default {
             { message: '请输入正确姓名', trigger: 'blur' }
           ],
           sex: [
-            { required: true, message: '请选择性别', trigger: 'change' }
+            { required: true, message: '请选择性别', trigger: 'blur' }
           ],
           date: [
-            { required: true, message: '请选择日期', trigger: 'change' }
+            { required: true, message: '请选择日期', trigger: 'blur' }
           ],
           tel: [
             { required: true, message: '请输入手机号', trigger: 'blur' },

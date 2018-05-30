@@ -6,23 +6,23 @@
 	 		<span>公司简介</span>
 	 	</div>
 	 	<div class="table-wrap">
-	 		<company-item @editTel="editTel"></company-item>
+	 		<company-item @editTel="editTel" :res = "res"></company-item>
 	 	</div>
 	 	<div class="title">
 	 		<span>活动进程</span>
 	 	</div>
-	 	<div class="table-wrap table-top">
+	 	<div class="table-wrap table-top" v-if="res.infoNum">
 	 		<div class="table-item">
 	 			<p>小声咖数</p>
-	 			<p>422</p>
+	 			<p>{{res.infoNum.childStarNum}}</p>
 	 		</div>
 	 		<div class="table-item">
-	 			<p>小声咖数</p>
-	 			<p>422</p>
+	 			<p>故事数</p>
+	 			<p>{{res.infoNum.storyNum}}</p>
 	 		</div>
 	 		<div class="table-item">
-	 			<p>小声咖数</p>
-	 			<p>422</p>
+	 			<p>指导老师数</p>
+	 			<p>{{res.infoNum.narratorNum}}</p>
 	 		</div>
 	 	</div>
 	 	
@@ -32,14 +32,20 @@
 </template>
 <script>
 import CompanyItem from 'base/company-item/company-item';
+import {getSingers} from 'api/singers';
 export default {
 	data() {
 		return {
-			
+			res: {}
 		}
 	},
 	created() {
-		
+		///hversion/vendor/detail
+		getSingers('/hversion/vendor/detail').then(res => {
+			this.res = res;
+		}).catch(err => {
+			console.log(err)
+		})
 	},
 	methods: {
 		

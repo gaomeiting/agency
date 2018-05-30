@@ -5,82 +5,49 @@
 	 		<span>故事列表</span>
 
 		 	<div class="search-wrap">
-		 		<search-box @queryChange="queryChange" ref="searchBox"></search-box>
+		 		<search-box @queryChange="queryChange" placeholder="搜索故事" ref="searchBox"></search-box>
 		 	</div>
 	 	</div>
 	 	<div class="table-wrap">
-	 		<story-list type="story" :playCls="playCls" @deleteStory="deleteStory" @switchState="switchState"></story-list>
+	 		<story-list :list="list" :loading="loading" type="story"></story-list>
 	 	</div>
 	 	<div class="pagination-wrap">
 	 		<el-pagination
 		      @size-change="handleSizeChange"
 		      @current-change="handleCurrentChange"
-		      :current-page.sync="currentPage3"
-		      :page-size="100"
+		      :current-page.sync="currentPage"
+		      :page-size="currentSize"
 		      layout="prev, pager, next, jumper"
-		      :total="1000">
+		      :total="total">
 		    </el-pagination>
 	 	</div>
-	 	<audio :src="currentSong.url" ref="audio"></audio>
 	</div>
 </transition>
 </template>
 <script>
+import { getSingers } from 'api/singers';
 import SearchBox from 'base/search-box/search-box';
 import TableList from 'base/table-list/table-list';
 import StoryList from 'base/story-list/story-list';
-const SONGLISTLEN = 20
+import  { getCommon } from"common/js/mixin";
 export default {
+	mixins: [getCommon],
 	data() {
 		return {
-			loading: false,
-			currentSong: {
-				url: 'http://dl.stream.qqmusic.qq.com/C400003LxmX246aRC7.m4a?vkey=53DD0EE597E35BBF57F5155A3DA3CB3B950EF9A45985DEC41E8D7F7BF7CCB1171452A827AA1BE6D2F2FCD4945FEE1838EED5A62276F1C16B&guid=8182525974&uin=0&fromtag=66'
-			},
-			playCls: [],
-			currentPage3: 1
-		}
-	},
-	created() {
-		//设置播放状态；
-		for(let i = 0; i < SONGLISTLEN; i++) {
-			this.playCls.push('icon-bofang')
+			currentSize: 6
 		}
 	},
 	methods: {
-		queryChange() {},
-		switchState(index, cls) {
-			let arr = this.playCls.slice()
-			arr[index] = cls === 'icon-bofang' ? 'icon-bofang1' : 'icon-bofang';
-			/*设置播放路径
-			this.currentSong =*/ 
-			if(cls === 'icon-bofang') {
-				this.$refs.audio.play()
-			}
-			else {
-				this.$refs.audio.pause()
-			}
-			this.playCls = arr;
-		},
-		deleteStory(item, index) {
-			console.log(item, index)
-		},
-		handleSizeChange() {
-
-		},
-		handleCurrentChange() {
-
-		},
-		deleteOne() {
-			console.log("deleteOne");
-		},
-		linkDetail() {
-			console.log("linkDetail")
-		},
-		goAdd() {
-			this.$router.push("/addSinger")
+		_getSingers( params) {
+			this.loading = true;
+			getSingers('/hversion/story',params).then(res => {
+				this.loading = false;
+				this.list = res.list;
+				this.total = res.total;
+			}).catch(err => {
+				console.log(err)
+			})
 		}
-	
 	},
 	components: {
 		TableList,
@@ -92,6 +59,7 @@ export default {
 
 <style scoped lang="scss">
 @import "~common/scss/variable";
+@import "~common/scss/mixin";
 .search-wrap {
 	margin-right: 20px;
 }
@@ -101,6 +69,7 @@ export default {
 	padding: 0 10px;
 	margin: 0 auto;
 	box-sizing: border-box;
+	@include minH(600px);
 }
 .title {
 	display: flex;

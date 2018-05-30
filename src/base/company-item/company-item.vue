@@ -3,40 +3,40 @@
 		<ul>
 			<li>
 				<div class="img">
-					<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1526011215105&di=809782c6c7241ad7f665fbaf4613b513&imgtype=0&src=http%3A%2F%2Fh.hiphotos.baidu.com%2Fimage%2Fpic%2Fitem%2Fa5c27d1ed21b0ef48c509cecd1c451da80cb3ec3.jpg">
+					<img :src="'/hversion'+res.id+'.jpg'">
 				</div>
 				<div class="content">
 					<div class="name">
 						<div class="name-item">
-							<span>石家庄小楼文化传播文化有限公司</span>
+							<span>{{res.name}}</span>
 						</div>
 					</div>
-					<div class="name">
+					<div class="name" v-if="res.linkMan">
 						<div class="name-item">
-							<i class="iconfont icon-xingmingyonghumingnicheng"></i><span>迎曦</span>
+							<i class="iconfont icon-xingmingyonghumingnicheng"></i><span>{{res.linkMan.name}}</span>
 						</div>
 						<div class="name-item">
 							<i class="iconfont icon-dianhua"></i>
-							<span contenteditable="true" @blur="editTel($event,0)" @mouseover="editShow(0)" @mouseout="editHide(0)">13912342345</span>
+							<span contenteditable="true" @blur="editTel($event,0)" @mouseover="editShow(0)" @mouseout="editHide(0)">{{res.linkMan.mobile}}</span>
 							<transition name="fade" transition-mode="out-in">
 							<i v-if="editFlag[0]" class="iconfont icon-bianji" style="color: #0366d6"></i>
 							</transition>
 						</div>
 						<div class="name-item">
 							<i class="iconfont icon-youxiang"></i>&nbsp;
-							<span>abc@abc.com.cn</span>
+							<span>{{res.linkMan.email}}</span>
 						</div>
 
 						
 					</div>
-					<div class="name">
-						<div class="name-item" v-if="type == 'singer'">
-							<span>简称:小楼文化</span>
+					<div class="name" v-if="res.shortName">
+						<div class="name-item">
+							<span>简称:{{res.shortName}}</span>
 						</div>
-						<div class="name-item" v-if="type == 'singer'">
+						<div class="name-item" v-if="res.vendorAddress">
 							<i class="iconfont icon-dizhi"></i>
-							<span>河北省 石家庄市&nbsp;</span>
-							<span contenteditable="true" @blur="editTel($event,1)" @mouseover="editShow(1)" @mouseout="editHide(1)">裕华区万达广场A座1023室</span>
+							<span>{{res.vendorAddress.province}} {{res.vendorAddress.city}}&nbsp;</span>
+							<span contenteditable="true" @blur="editTel($event,1)" @mouseover="editShow(1)" @mouseout="editHide(1)">{{res.vendorAddress.address}}</span>
 							<transition name="fade" transition-mode="out-in">
 							<i v-if="editFlag[1]" class="iconfont icon-bianji" style="color: #0366d6"></i>
 							</transition>
@@ -51,9 +51,11 @@
 <script>
 export default {
 	props: {
-		type: {
-			type: String,
-			default: 'singer'
+		res : {
+			type: Object,
+			default() {
+				return {}
+			}
 		}
 	},
 	data() {
