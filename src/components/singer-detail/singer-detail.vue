@@ -1,8 +1,8 @@
 <template>
 <transition name="fade" mode="out-in">
+	<div>
 	<div class="page" v-loading="loading">
-
-	 	<div class="title">
+		<div class="title">
 	 		<span>声咖详情</span>
 	 	</div>
 	 	<div class="table-wrap">
@@ -12,7 +12,7 @@
 	 		<span @click.stop="switchTable(index)" v-for=" (t, index) in title" :class="{active: currentIndex == index}">{{ t.name }}</span>
 	 	</div>
 	 	<transition name="fade" mode="out-in">
-	 	<div class="table-wrap table" v-if="currentIndex == 0">
+	 	<div class="table-wrap table" v-show="currentIndex == 0">
 	 		<story-list :loading="loading" :list="stories" :playCls="playCls" @deleteStory="deleteStory" @switchState="switchState"></story-list>
 	 		<audio :src="currentSong.url" ref="audio"></audio>
 	 		<div class="pagination-wrap">
@@ -28,15 +28,18 @@
 	 	</div>
 	 	</transition>
 	 	<transition name="fade" mode="out-in">
-	 	<div class="table-wrap table-top table" v-if="currentIndex == 1">
+	 	<div class="table-wrap table-top table" v-show="currentIndex == 1">
 	 		<el-upload action="/hversion/upload" multiple list-type="picture-card" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" :on-success="handleAvatarSuccess"  :file-list="fileList">
 			  <i class="el-icon-plus"></i>
 			</el-upload>
-			<el-dialog :visible.sync="dialogVisible">
-			  <img width="100%" :src="dialogImageUrl" alt>
-			</el-dialog>
+			
 	 	</div>
 	 	</transition>
+	 	
+	</div>
+	<el-dialog :visible.sync="dialogVisible">
+		<img width="100%" :src="dialogImageUrl" alt="">
+	</el-dialog>
 	</div>
 </transition>
 </template>
@@ -137,6 +140,9 @@ export default {
 				}
 			})
 		},
+		switchPreview() {
+			this.dialogVisible = !this.dialogVisible;
+		},
 		switchTable(index) {
 			if (index == this.currentIndex) return;
 			this.currentIndex = index;
@@ -185,7 +191,7 @@ export default {
 
 		},
 	    handlePictureCardPreview(file) {
-	    	console.log(file, 123)
+	    	console.log(file.url, 123456789)
 	        this.dialogImageUrl = file.url;
 	        this.dialogVisible = true;
 	        console.log(this.dialogVisible)
@@ -267,6 +273,25 @@ export default {
 <style scoped lang="scss">
 @import "~common/scss/variable";
 @import "~common/scss/mixin";
+.preview {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	overflow: auto;
+	width: 100%;
+	height: 100%;
+	border: 10px solid red;
+	border-box: border-box;
+	background: rgba(0,0,0,0.5);
+	/* > img {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate3d(-50%, -50%, 0)
+	} */
+}
 .table-wrap {
 	width: 80%;
 	background: #fff;
@@ -282,6 +307,7 @@ export default {
 	position: absolute;
 	left: 50%;
 	transform: translate3d(-50%, 0, 0);
+
 }
 .table-top {
 	padding-top: 20px;

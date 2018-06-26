@@ -4,12 +4,12 @@
 			<router-link v-for="(item, index) in navList" :to="item.url" :key="item.name" tag="li">{{item.name}} </router-link>
 		</ul>
 
-		<div class="header">
+		<!-- <div class="header">
 			<div class="img">
 				<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1525953321967&di=afdfbe093a165c30985af82231207719&imgtype=0&src=http%3A%2F%2Fg.hiphotos.baidu.com%2Fimage%2Fpic%2Fitem%2F37d3d539b6003af37401eb21392ac65c1038b633.jpg">
 			</div>
 			<div class="btn" @click="signOut">退出</div>
-		</div>
+		</div> -->
  	</div>
 </template>
 <script>

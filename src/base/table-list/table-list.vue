@@ -174,6 +174,10 @@ export default {
 		border-bottom: 1px solid $color-background;
 		padding: 20px;
 		position: relative;
+		font-size: 15px;
+		&:hover {
+		    cursor: pointer;
+		}
 		.tip-select-wrap {
 			position: absolute;
 			z-index: 999;
@@ -219,10 +223,21 @@ export default {
 			}
 			.info {
 				display: flex;
+				.name-item {
+					display: flex;
+					> i {
+
+					}
+					> span {
+						line-height: 1.2;
+						padding-left: 4px;
+					}
+				}
+				
 			}
 		}
 		.icon {
-
+			padding-left: 16px;
 		}
 	}
 	

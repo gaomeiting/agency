@@ -1,21 +1,40 @@
-# my-tickets
+# 小声咖第三方管理后台网站
 
-> A Vue.js project
+项目描述
+首页
+	公司简介
+	活动流程
+小声咖
+	搜索分页
+	添加（表单）
+	详情
+		修改基本信息
+		上传多张图片，上传预览，大图预览，删除上传图片
+		上传音频+表单处理，删除音频
+		列表预览
+	删除
+指导老师
+	搜索分页
+	添加（表单）
+	详情
+		修改基本信息
+		删除故事
+	删除
+故事
+	列表展示
+参与意向
+	列表展示
+实现技术 vue+vue-router+vuex+axios+scss+elementUI
+技术要求
+1.单页面项目用户的认证思路，使用jwt身份验证,结合vuex和本地存储,设置axios的header，router.beforeEach进行路由meta判断进行路由保护
+2.头像上传+表单，当图片 file.size / 1024 / 1024 < 0.5时作为base64存储减少发送一次请求， 其他情况上传图片利用头像成功的id提交表单
+3.多张多图片上传及预览，点击大图预览，删除
+4.音频文件上传，限制大小
+5.模糊搜索，手指抬起时自动搜索
+6.vue 地区选择联动利用elementUI的自定义el-cascader
+7.分页功能抽象mixin
+8.多音频文件处理播放暂停时音乐没有声音问题（注意不是replay()的问题）30延时处理
 
-## Build Setup
 
-``` bash
-# install dependencies
-npm install
 
-# serve with hot reload at localhost:8080
-npm run dev
 
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-```
-
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).

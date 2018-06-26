@@ -15,6 +15,13 @@ overflow-x:auto;
     transform: translate3d(-50%, 0, 0);
     box-sizing: border-box;
 }
+.form {
+    position: absolute;
+    left: 50%;
+    transform: translate3d(-50%, 0, 0);
+    box-sizing: border-box;
+}
+
 .fade-enter-active, .fade-leave-active {
     opacity: 1;
     transition: .3s linear;
